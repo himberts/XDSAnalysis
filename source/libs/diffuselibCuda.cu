@@ -124,15 +124,21 @@ void DiffuseXRD::PreProcessHr(){
 
    blockSize = 1024;
    numBlocks = N / blockSize+1;;
+   std::cerr<<"Get Cuda Devices\n";
    cudaGetDevice(&CurrDevice);
+   std::cerr<<"Gotten Device\n";
    PrintProcessInfo("PreProcessHr","GPU",CurrDevice,numBlocks,blockSize);
+   std::cerr<<"Process Written\n";
    G_PreProcessHr<<<numBlocks, blockSize>>>(x,m_RlengthHr,m_StartR,m_StepSize,m_AvgLr,m_SigmaR);
+   std::cerr<<"Process Finished\n";
    cudaDeviceSynchronize();
    double NormFactor = 1;//x[0];
    for(int n = 0; n<N; n++){
        m_HrTable[n] = M_PI*(double)x[n]/NormFactor;
    }
+   std::cerr<<"Data copied\n";
    cudaFree(x);
+   std::cerr<<"Unified memory freed\n";
 }
 
 
