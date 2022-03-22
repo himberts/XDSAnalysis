@@ -111,7 +111,7 @@ void DiffuseXRD::PreProcessHr(){
   double *x;
   int N = (m_RlengthHr+1);
   std::cerr<<"Allocate Memory"<<std::endl;
-  cudaMalloc(&x, N*sizeof(double));
+  cudaMallocManaged(&x, N*sizeof(double));
   std::cerr<<"Memory Allocated"<<std::endl;
 
   cudaError_t err = cudaGetLastError();        // Get error code
