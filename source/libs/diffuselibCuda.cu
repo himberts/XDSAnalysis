@@ -109,9 +109,11 @@ void DiffuseXRD::PreProcessHr(){
   std::cerr<<"Allocate Device"<<std::endl;
   cudaSetDevice(CurrDevice);
   double *x;
+  double *x_d;
   int N = (m_RlengthHr+1);
   std::cerr<<"Allocate Memory"<<std::endl;
-  cudaMallocManaged(&x, N*sizeof(double));
+  x_d = (double*)malloc(sizeof(double) * N);
+  cudaMalloc(&x, N*sizeof(double));
   std::cerr<<"Memory Allocated"<<std::endl;
 
   cudaError_t err = cudaGetLastError();        // Get error code
@@ -123,9 +125,10 @@ void DiffuseXRD::PreProcessHr(){
    }
   // initialize x arrays on the host
   for (int i = 0; i < N; i++) {
-       x[i] = 0.0;
+       x_d[i] = 0.0;
    }
-
+  
+  cudaMemcpy(x, x_d, sizeof(double) * N, cudaMemcpyHostToDevice);
   // Run kernel on all elements on the GPU
    int blockSize;
    int numBlocks;
@@ -140,9 +143,10 @@ void DiffuseXRD::PreProcessHr(){
    G_PreProcessHr<<<numBlocks, blockSize>>>(x,m_RlengthHr,m_StartR,m_StepSize,m_AvgLr,m_SigmaR);
    std::cerr<<"Process Finished\n";
    cudaDeviceSynchronize();
+   cudaMemcpy(x_d, x, sizeof(double) * N, cudaMemcpyDeviceToHost);
    double NormFactor = 1;//x[0];
    for(int n = 0; n<N; n++){
-       m_HrTable[n] = M_PI*(double)x[n]/NormFactor;
+       m_HrTable[n] = M_PI*(double)x_d[n]/NormFactor;
    }
    std::cerr<<"Data copied\n";
    cudaFree(x);
