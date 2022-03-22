@@ -106,11 +106,13 @@ void DiffuseXRD::PreProcessHz(int nmax){
 void DiffuseXRD::PreProcessHr(){
 
   int CurrDevice = 0;
+  std::cerr<<"Allocate Device"<<std::endl;
   cudaSetDevice(CurrDevice);
   double *x;
   int N = (m_RlengthHr+1);
+  std::cerr<<"Allocate Memory"<<std::endl;
   cudaMallocManaged(&x, N*sizeof(double));
-
+  std::cerr<<"Memory Allocated"<<std::endl;
   // initialize x arrays on the host
   for (int i = 0; i < N; i++) {
        x[i] = 0.0;
