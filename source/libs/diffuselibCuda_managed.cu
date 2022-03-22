@@ -106,21 +106,11 @@ void DiffuseXRD::PreProcessHz(int nmax){
 void DiffuseXRD::PreProcessHr(){
 
   int CurrDevice = 0;
-  std::cerr<<"Allocate Device"<<std::endl;
   cudaSetDevice(CurrDevice);
   double *x;
   int N = (m_RlengthHr+1);
-  std::cerr<<"Allocate Memory"<<std::endl;
-  cudaMallocManaged(&x, N*sizeof(double));
-  std::cerr<<"Memory Allocated"<<std::endl;
+  cudaMalloc(&x, N*sizeof(double));
 
-  cudaError_t err = cudaGetLastError();        // Get error code
-
-   if ( err != cudaSuccess )
-   {
-     std::cerr<<"CUDA Error:"<<cudaGetErrorString(err)<<std::endl;
-      exit(-1);
-   }
   // initialize x arrays on the host
   for (int i = 0; i < N; i++) {
        x[i] = 0.0;
@@ -132,21 +122,15 @@ void DiffuseXRD::PreProcessHr(){
 
    blockSize = 1024;
    numBlocks = N / blockSize+1;;
-   std::cerr<<"Get Cuda Devices\n";
    cudaGetDevice(&CurrDevice);
-   std::cerr<<"Gotten Device\n";
    PrintProcessInfo("PreProcessHr","GPU",CurrDevice,numBlocks,blockSize);
-   std::cerr<<"Process Written\n";
    G_PreProcessHr<<<numBlocks, blockSize>>>(x,m_RlengthHr,m_StartR,m_StepSize,m_AvgLr,m_SigmaR);
-   std::cerr<<"Process Finished\n";
    cudaDeviceSynchronize();
    double NormFactor = 1;//x[0];
    for(int n = 0; n<N; n++){
        m_HrTable[n] = M_PI*(double)x[n]/NormFactor;
    }
-   std::cerr<<"Data copied\n";
    cudaFree(x);
-   std::cerr<<"Unified memory freed\n";
 }
 
 
@@ -209,9 +193,9 @@ void DiffuseXRD::PreProcessNSummation(double qz){
   double *y;
   double *hz;
   int N = (m_Rlength+1);
-  cudaMallocManaged(&x, N*sizeof(double));
-  cudaMallocManaged(&y, ((m_Rlength+1)*(CNMAX+1))*sizeof(double));
-  cudaMallocManaged(&hz, (CNMAX+1)*sizeof(double));
+  cudaMalloc(&x, N*sizeof(double));
+  cudaMalloc(&y, ((m_Rlength+1)*(CNMAX+1))*sizeof(double));
+  cudaMalloc(&hz, (CNMAX+1)*sizeof(double));
   // initialize x arrays on the host
   for (int i = 0; i < N; i++) {
        x[i] = 0.0;
@@ -246,9 +230,9 @@ void DiffuseXRD::HankelTransformation(double qz){
   double *y;
   double *hr;
   int N = (m_Rlength+1);
-  cudaMallocManaged(&x, N*sizeof(double));
-  cudaMallocManaged(&y, N*sizeof(double));
-  cudaMallocManaged(&hr,N*sizeof(double));
+  cudaMalloc(&x, N*sizeof(double));
+  cudaMalloc(&y, N*sizeof(double));
+  cudaMalloc(&hr,N*sizeof(double));
   // initialize x arrays on the host
   for (int i = 0; i < N; i++) {
        y[i] = m_SummationTable[i];
@@ -256,7 +240,7 @@ void DiffuseXRD::HankelTransformation(double qz){
    }
 
    N = m_NHankelTransform+1;
-   cudaMallocManaged(&x, N*sizeof(double));
+   cudaMalloc(&x, N*sizeof(double));
    for (int i = 0; i < N; i++) {
         x[i] = 0.0;
     }
