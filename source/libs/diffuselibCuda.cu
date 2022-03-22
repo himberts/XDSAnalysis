@@ -113,6 +113,14 @@ void DiffuseXRD::PreProcessHr(){
   std::cerr<<"Allocate Memory"<<std::endl;
   cudaMallocManaged(&x, N*sizeof(double));
   std::cerr<<"Memory Allocated"<<std::endl;
+
+  cudaError_t err = cudaGetLastError();        // Get error code
+
+   if ( err != cudaSuccess )
+   {
+     std::cerr<<"CUDA Error:"<<cudaGetErrorString(err)<<std::endl;
+      exit(-1);
+   }
   // initialize x arrays on the host
   for (int i = 0; i < N; i++) {
        x[i] = 0.0;
