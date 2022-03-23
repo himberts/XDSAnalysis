@@ -37,6 +37,8 @@ void GetCudaInfo(){
     printf("Device Number: %d\n", i);
     printf("Device name: %s\n", prop.name);
     printf("MaxThreats name: %d\n", prop.maxThreadsPerBlock);
+    printf("Major: %d\n",prop.major);
+    printf("Minor: %d\n",prop.minor);
     }
 }
 
