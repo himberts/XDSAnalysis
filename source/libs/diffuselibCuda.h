@@ -30,6 +30,7 @@ double CorrFunc_Integrand(double x, void * parameter);
 double CalleApproximation_pre(double, int ,double);
 double CorrFunc(double, double, double, int, double);
 void WriteArrayToBinFile(double*, int, int, char*);
+void ReadBinFile(double*, int, int, char*);
 void BackupFile(char*);
 
 double Gaussian(double,double,double);
@@ -143,6 +144,7 @@ public:
   void PreProcessNSummation(double);
   void HankelTransformation(double);
   void PreProcessCorrFunc(int);
+  void LoadCorrFunc(char*);
   void PreProcessHz(int);
   void PreProcessHr();
   void SetZeta(double);

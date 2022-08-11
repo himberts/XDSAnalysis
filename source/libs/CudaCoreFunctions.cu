@@ -37,8 +37,6 @@ void GetCudaInfo(){
     printf("Device Number: %d\n", i);
     printf("Device name: %s\n", prop.name);
     printf("MaxThreats name: %d\n", prop.maxThreadsPerBlock);
-    printf("Major: %d\n",prop.major);
-    printf("Minor: %d\n",prop.minor);
     }
 }
 
@@ -327,7 +325,7 @@ void G_CalculateNSummation(double *xt, double *cf,double *hz, int NumR, double e
     // }
     for(int n =-NMax;n<=NMax;n++){
       // xt[index] += cos(qz*n*2*M_PI/q1)*hz[abs(n)]*exp(-(qz*qz*eta* cf[index+abs(n)*(NumR)] )/2);
-      xt[index] += cos(qz*n*2*M_PI/q1)*hz[abs(n)]*exp(-(qz*qz*eta* cf[index+abs(n)*(NumR)]+n*n*2*M_PI/q1*2*M_PI/q1*0.004*0.002)/(2*(1+cf[index+abs(n)*(NumR)]*0.004*0.002) ) );
+      xt[index] += cos(qz*n*2*M_PI/q1)*hz[abs(n)]*exp(-(qz*qz*eta/q1/q1* cf[index+abs(n)*(NumR)]+n*n*2*M_PI/q1*2*M_PI/q1*0.004*0.002)/(2*(1+cf[index+abs(n)*(NumR)]*0.004*0.002) ) );
       // xt[index] += exp(-(qz*qz*eta* cf[index+n*(NumR)] )/2);
       // xt[index] = xt[index] + cos(qz*n*2*M_PI/q1)*hz[n];
     }
