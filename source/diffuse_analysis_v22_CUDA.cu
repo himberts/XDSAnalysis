@@ -657,7 +657,8 @@ int main(int argc, char const *argv[]) {
    else if(SysModus==e_fitc){
 
         PrintProcessInfoHeader();
-         Simulation.PreProcessCorrFunc(CNMAX);
+         // Simulation.PreProcessCorrFunc(CNMAX);
+         Simulation.LoadCorrFunc("CorrelationFunctionTable_08112022.cf");
          // PrintProcessInfoHeader();
          // Simulation.PreProcessHr();
          // Simulation.PreProcessHz(CNMAX);
