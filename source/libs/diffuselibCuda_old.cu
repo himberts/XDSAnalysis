@@ -95,12 +95,6 @@ void DiffuseXRD::PreProcessCorrFunc(int nmax){
 }
 
 
-void DiffuseXRD::LoadCorrFunc(char* FileName){
-  PrintProcessInfo("Load Correlation Function","CPU",0,0,0);
-  std::cout<<std::endl;
-  ReadBinFile(m_CorrFuncTable,m_Rlength+1,CNMAX+1,FileName);
-}
-
 void DiffuseXRD::PreProcessHz(int nmax){
   PrintProcessInfo("PreProcessHz","CPU",0,0,0);
   double NormFactor = 1;//Hz(0*m_Dspacing,m_AvgLz,m_SigmaZ,m_Dspacing);
@@ -112,6 +106,7 @@ void DiffuseXRD::PreProcessHz(int nmax){
 void DiffuseXRD::PreProcessHr(){
 
   int CurrDevice = 0;
+  std::cerr<<"Allocate Device"<<std::endl;
   cudaSetDevice(CurrDevice);
   double *x;
   double *x_CPU;
@@ -134,22 +129,28 @@ void DiffuseXRD::PreProcessHr(){
    }
 
   cudaMemcpy(x, x_CPU, sizeof(double) * N, cudaMemcpyHostToDevice);
-
   // Run kernel on all elements on the GPU
    int blockSize;
    int numBlocks;
 
    blockSize = 1024;
    numBlocks = N / blockSize+1;;
+   std::cerr<<"Get Cuda Devices\n";
    cudaGetDevice(&CurrDevice);
+   std::cerr<<"Gotten Device\n";
    PrintProcessInfo("PreProcessHr","GPU",CurrDevice,numBlocks,blockSize);
+   std::cerr<<"Process Written\n";
    G_PreProcessHr<<<numBlocks, blockSize>>>(x,m_RlengthHr,m_StartR,m_StepSize,m_AvgLr,m_SigmaR);
+   std::cerr<<"Process Finished\n";
    cudaDeviceSynchronize();
+   cudaMemcpy(x_CPU, x, sizeof(double) * N, cudaMemcpyDeviceToHost);
    double NormFactor = 1;//x[0];
    for(int n = 0; n<N; n++){
-       m_HrTable[n] = M_PI*(double)x[n]/NormFactor;
+       m_HrTable[n] = M_PI*(double)x_CPU[n]/NormFactor;
    }
+   std::cerr<<"Data copied\n";
    cudaFree(x);
+   std::cerr<<"Unified memory freed\n";
 }
 
 
@@ -211,20 +212,33 @@ void DiffuseXRD::PreProcessNSummation(double qz){
   double *x;
   double *y;
   double *hz;
+  double *x_CPU;
+  double *y_CPU;
+  double *hz_CPU;
   int N = (m_Rlength+1);
+
+
+  x_CPU = (double*)malloc(N*sizeof(double));
   cudaMalloc(&x, N*sizeof(double));
+  y_CPU = (double*)malloc(((m_Rlength+1)*(CNMAX+1))*sizeof(double));
   cudaMalloc(&y, ((m_Rlength+1)*(CNMAX+1))*sizeof(double));
+  hz_CPU = (double*)malloc((CNMAX+1)*sizeof(double));
   cudaMalloc(&hz, (CNMAX+1)*sizeof(double));
+
   // initialize x arrays on the host
   for (int i = 0; i < N; i++) {
-       x[i] = 0.0;
+       x_CPU[i] = 0.0;
    }
    for (int i = 0; i < ((m_Rlength+1)*(CNMAX+1)); i++) {
-        y[i] = m_CorrFuncTable[i];
+        y_CPU[i] = m_CorrFuncTable[i];
     }
     for (int i = 0; i < ((CNMAX+1)); i++) {
-         hz[i] = m_HzTable[i];
+         hz_CPU[i] = m_HzTable[i];
      }
+
+    cudaMemcpy(x, x_CPU, sizeof(double) * N, cudaMemcpyHostToDevice);
+    cudaMemcpy(y, y_CPU, ((m_Rlength+1)*(CNMAX+1))*sizeof(double), cudaMemcpyHostToDevice);
+    cudaMemcpy(hz, hz_CPU, (CNMAX+1)*sizeof(double), cudaMemcpyHostToDevice);
   // Run kernel on all elements on the GPU
    int blockSize;
    int numBlocks;
@@ -234,8 +248,11 @@ void DiffuseXRD::PreProcessNSummation(double qz){
    cudaGetDevice(&CurrDevice);
    G_CalculateNSummation<<<numBlocks, blockSize>>>(x,y,hz,N,m_eta,qz,CNMAX,m_q1);
    cudaDeviceSynchronize();
+
+   cudaMemcpy(x_CPU,x, sizeof(double) * N, cudaMemcpyDeviceToHost);
+
    for(int n = 0; n<N; n++){
-       m_SummationTable[n] = (double)x[n];
+       m_SummationTable[n] = (double)x_CPU[n];
    }
    cudaFree(x);
    cudaFree(y);
@@ -247,24 +264,43 @@ void DiffuseXRD::HankelTransformation(double qz){
 
   int CurrDevice = 0;
   cudaSetDevice(CurrDevice);
+  // double *x;
+  // double *y;
+  // double *hr;
+  // int N = (m_Rlength+1);
+  // cudaMallocManaged(&x, N*sizeof(double));
+  // cudaMallocManaged(&y, N*sizeof(double));
+  // cudaMallocManaged(&hr,N*sizeof(double));
   double *x;
   double *y;
   double *hr;
+  double *x_CPU;
+  double *y_CPU;
+  double *hr_CPU;
   int N = (m_Rlength+1);
-  cudaMalloc(&x, N*sizeof(double));
+
+  y_CPU = (double*)malloc(N*sizeof(double));
   cudaMalloc(&y, N*sizeof(double));
-  cudaMalloc(&hr,N*sizeof(double));
+  hr_CPU = (double*)malloc(N*sizeof(double));
+  cudaMalloc(&hr, N*sizeof(double));
+
   // initialize x arrays on the host
   for (int i = 0; i < N; i++) {
-       y[i] = m_SummationTable[i];
-       hr[i] = m_HrTable[i];
+       y_CPU[i] = m_SummationTable[i];
+       hr_CPU[i] = m_HrTable[i];
    }
 
+   cudaMemcpy(y, y_CPU, N*sizeof(double), cudaMemcpyHostToDevice);
+   cudaMemcpy(hr, hr_CPU, N*sizeof(double), cudaMemcpyHostToDevice);
+
    N = m_NHankelTransform+1;
+   x_CPU = (double*)malloc(N*sizeof(double));
    cudaMalloc(&x, N*sizeof(double));
    for (int i = 0; i < N; i++) {
-        x[i] = 0.0;
+        x_CPU[i] = 0.0;
     }
+
+  cudaMemcpy(x, x_CPU, N*sizeof(double), cudaMemcpyHostToDevice);
 
   // Run kernel on all elements on the GPU
    int blockSize;
@@ -277,8 +313,10 @@ void DiffuseXRD::HankelTransformation(double qz){
    G_HankelTransform<<<numBlocks, blockSize>>>(x,y,hr,N,m_eta,m_zeta,qz,CNMAX,m_StartR,m_StepSize);
    cudaDeviceSynchronize();
 
+   cudaMemcpy(x_CPU, x, N*sizeof(double), cudaMemcpyDeviceToHost);
+
    for(int n = 0; n<N; n++){
-       m_HankelTransform[n] = (double)x[n];
+       m_HankelTransform[n] = (double)x_CPU[n];
    }
    cudaFree(x);
    cudaFree(y);
@@ -691,7 +729,7 @@ double CorrFunc(double r, double eta, double zeta, int n, double q1){
   CorrFunc_Integrand_GSL.params = &Param_tmp;
   gsl_integration_qagiu(&CorrFunc_Integrand_GSL,0,0,1e-4, 100000, w, &result, &error);
   gsl_integration_workspace_free (w);
-  return((2)*result);
+  return((2/pow(q1,2))*result);
 }
 
 double CalleApproximation_pre(double r, int n,double q1){
@@ -715,16 +753,6 @@ void WriteArrayToBinFile(double * Array, int n, int m, char* FileName){
   OutputFile.close();
 }
 
-void ReadBinFile(double * Array, int n, int m, char* FileName){
-  fstream OutputFile;
-  OutputFile.open(FileName,ios::in|ios::binary);
-  for(int k = 0; k<n; k++){
-    for(int l = 0; l<m; l++){
-      OutputFile.read((char*)&(Array[k*m+l]),sizeof(double));
-    }
-  }
-  OutputFile.close();
-}
 
 void BackupFile(char* FileName){
   ifstream f(FileName);

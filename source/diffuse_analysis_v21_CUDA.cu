@@ -496,7 +496,7 @@ int main(int argc, char const *argv[]) {
 
  else if(SysModus==e_fitd){
 
-      PrintProcessInfoHeader();
+       PrintProcessInfoHeader();
        Simulation.PreProcessCorrFunc(CNMAX);
        PrintProcessInfoHeader();
        Simulation.PreProcessHr();
