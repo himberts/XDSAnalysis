@@ -95,12 +95,6 @@ void DiffuseXRD::PreProcessCorrFunc(int nmax){
 }
 
 
-void DiffuseXRD::LoadCorrFunc(char* FileName){
-  PrintProcessInfo("Load Correlation Function","CPU",0,0,0);
-  std::cout<<std::endl;
-  ReadBinFile(m_CorrFuncTable,m_Rlength+1,CNMAX+1,FileName);
-}
-
 void DiffuseXRD::PreProcessHz(int nmax){
   PrintProcessInfo("PreProcessHz","CPU",0,0,0);
   double NormFactor = 1;//Hz(0*m_Dspacing,m_AvgLz,m_SigmaZ,m_Dspacing);
@@ -115,8 +109,8 @@ void DiffuseXRD::PreProcessHr(){
   cudaSetDevice(CurrDevice);
   double *x;
   int N = (m_RlengthHr+1);
-  // cudaMallocManaged(&x, N*sizeof(double));
   cudaMalloc(&x, N*sizeof(double));
+
   // initialize x arrays on the host
   for (int i = 0; i < N; i++) {
        x[i] = 0.0;
@@ -225,8 +219,6 @@ void DiffuseXRD::PreProcessNSummation(double qz){
        m_SummationTable[n] = (double)x[n];
    }
    cudaFree(x);
-   cudaFree(y);
-   cudaFree(hz);
 }
 
 
@@ -268,8 +260,6 @@ void DiffuseXRD::HankelTransformation(double qz){
        m_HankelTransform[n] = (double)x[n];
    }
    cudaFree(x);
-   cudaFree(y);
-   cudaFree(hr);
 }
 
 
@@ -678,7 +668,7 @@ double CorrFunc(double r, double eta, double zeta, int n, double q1){
   CorrFunc_Integrand_GSL.params = &Param_tmp;
   gsl_integration_qagiu(&CorrFunc_Integrand_GSL,0,0,1e-4, 100000, w, &result, &error);
   gsl_integration_workspace_free (w);
-  return((2)*result);
+  return((2/pow(q1,2))*result);
 }
 
 double CalleApproximation_pre(double r, int n,double q1){
@@ -702,16 +692,6 @@ void WriteArrayToBinFile(double * Array, int n, int m, char* FileName){
   OutputFile.close();
 }
 
-void ReadBinFile(double * Array, int n, int m, char* FileName){
-  fstream OutputFile;
-  OutputFile.open(FileName,ios::in|ios::binary);
-  for(int k = 0; k<n; k++){
-    for(int l = 0; l<m; l++){
-      OutputFile.read((char*)&(Array[k*m+l]),sizeof(double));
-    }
-  }
-  OutputFile.close();
-}
 
 void BackupFile(char* FileName){
   ifstream f(FileName);
