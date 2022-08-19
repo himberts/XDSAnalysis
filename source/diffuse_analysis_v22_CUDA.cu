@@ -496,7 +496,8 @@ int main(int argc, char const *argv[]) {
  else if(SysModus==e_fitd){
 
       PrintProcessInfoHeader();
-       Simulation.PreProcessCorrFunc(CNMAX);
+       // Simulation.PreProcessCorrFunc(CNMAX);
+       Simulation.LoadCorrFunc("CorrelationFunctionTable_08112022.cf");
        PrintProcessInfoHeader();
        Simulation.PreProcessHr();
        Simulation.PreProcessHz(CNMAX);
@@ -590,7 +591,7 @@ int main(int argc, char const *argv[]) {
              break;
 
            status = gsl_multifit_test_delta (s->dx, s->x,
-                                             1e-4, 1e-4);
+                                             5e-4, 5e-4);
          }
        while (status == GSL_CONTINUE && iter < 500);
        gsl_multifit_fdfsolver_jac(s,J);
