@@ -3,7 +3,7 @@
 #define CudaCoreFunctions_h
 
 struct IntegrandParameter {float r; int n; double zeta; double eta; double q1;};
-struct HrIntegrandParameter {float r; int n; double zeta; double eta; double q1; double Avgr; double sigmar;};
+struct HrIntegrandParameter {double r; int n; double zeta; double eta; double q1; double Avgr; double sigmar;};
 struct HankelParameter {double zeta; double eta; double qr; double qz; double* hr; double* G; double rStart; double rStep;};
 
 typedef double (*Integrand_t)(double, HrIntegrandParameter);
