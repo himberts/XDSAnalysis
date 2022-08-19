@@ -262,8 +262,9 @@ void DiffuseXRD::PreProcessNSummation(double qz){
 
 
 void DiffuseXRD::HankelTransformation(double qz){
+    int CurrDevice = 0;
     cudaSetDevice(CurrDevice);
-    
+
     double *x;
     double *y;
     double *hr;
