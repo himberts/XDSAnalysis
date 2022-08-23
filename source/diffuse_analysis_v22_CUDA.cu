@@ -151,12 +151,13 @@ xi_f (const gsl_vector * x, void *params,
       gsl_vector_set (xiS2, i, (Yi - y2[i])/sigma2[i]); //!!!!
   }
 
-
   for (i = 0; i < n; i++)
   {
       gsl_vector_set (f, i, gsl_vector_get(xiS1, i)+ gsl_vector_get(xiS2, i));
   }
 
+  gsl_vector_free(xiS1);
+  gsl_vector_free(xiS2);
   return GSL_SUCCESS;
 }
 
@@ -238,101 +239,101 @@ xi_fdf (const gsl_vector * x, void *params,
 }
 
 
-int
-xi_corf (const gsl_vector * x, void *params,
-        gsl_vector * f)
-{
-  size_t n = ((struct datadiffuse *)params)->n;
-  double *y = ((struct datadiffuse *)params)->y;
-  double *sigma = ((struct datadiffuse *) params)->sigma;
-  double *rdata = ((struct datadiffuse *) params)->qpar;
-
-  double eta = gsl_vector_get (x, 0);
-  double zeta = gsl_vector_get (x, 1);
-
-  double qz = Simulation.GetQzStart();
-
-  // double Normalisation;
-  Simulation.SetEta(eta);
-  Simulation.SetZeta(zeta);
-  Simulation.ConvertUnitsCale();
-
-  size_t i;
-
-  for (i = 0; i < n; i++)
-    {
-      // /* Model Yi = A * exp(-lambda * i) + b */
-      double Yi = (Simulation.CorrFuncApprox(rdata[i],0));
-      gsl_vector_set (f, i, (Yi - y[i])/sigma[i]); //!!!!
-    }
-  return GSL_SUCCESS;
-}
-
-
-int
-xi_dcorf (const gsl_vector * x, void *params,
-         gsl_matrix * J)
-{
-  size_t n = ((struct datadiffuse *)params)->n;
-
-    double eta = gsl_vector_get (x, 0);
-    double zeta = gsl_vector_get (x, 1);
-    gsl_vector* xtmp = gsl_vector_calloc(2);
-    gsl_vector* fzp = gsl_vector_calloc(n);
-    gsl_vector* fzm = gsl_vector_calloc(n);
-    gsl_vector* ftmp = gsl_vector_calloc(n);
-    gsl_vector* fep = gsl_vector_calloc(n);
-    gsl_vector* fem = gsl_vector_calloc(n);
-
-
-    gsl_vector_memcpy(xtmp, x);
-    gsl_vector_set(xtmp,0,eta+0.01);
-    xi_f (xtmp, params, fep);
-    gsl_vector_set(xtmp,0,eta-0.01);
-    xi_f (xtmp, params, fem);
-    gsl_vector_set(xtmp,0,eta);
-
-    gsl_vector_set(xtmp,1,zeta+1);
-    xi_f (xtmp, params, fzp);
-    gsl_vector_set(xtmp,1,zeta-1);
-    xi_f (xtmp, params, fzm);
-
-    gsl_vector_set(xtmp,1,zeta);
-    xi_f (xtmp, params, ftmp);
-
-  size_t i;
-
-  for (i = 0; i < n; i++)
-    {
-      double fzpi = gsl_vector_get (fzp, i);
-      double fzmi = gsl_vector_get (fzm, i);
-      double fepi = gsl_vector_get (fep, i);
-      double femi = gsl_vector_get (fem, i);
-      double ftmpi = gsl_vector_get (ftmp, i);
-      double dfzi = ((fzpi-ftmpi)/1+(ftmpi-fzmi)/1)/2; //!!!
-      double dfei = ((fepi-ftmpi)/.01+(ftmpi-femi)/.01)/2; //!!!
-      gsl_matrix_set (J, i, 0, dfei/2);
-      gsl_matrix_set (J, i, 1, dfzi/2);
-    }
-
-    gsl_vector_free(fzp);
-    gsl_vector_free(fzm);
-    gsl_vector_free(ftmp);
-    gsl_vector_free(fep);
-    gsl_vector_free(fem);
-    gsl_vector_free(xtmp);
-  return GSL_SUCCESS;
-}
-
-int
-xi_corfdcorf (const gsl_vector * x, void *params,
-          gsl_vector * f, gsl_matrix * J)
-{
-  xi_corf (x, params, f);
-  xi_dcorf (x, params, J);
-
-  return GSL_SUCCESS;
-}
+// int
+// xi_corf (const gsl_vector * x, void *params,
+//         gsl_vector * f)
+// {
+//   size_t n = ((struct datadiffuse *)params)->n;
+//   double *y = ((struct datadiffuse *)params)->y;
+//   double *sigma = ((struct datadiffuse *) params)->sigma;
+//   double *rdata = ((struct datadiffuse *) params)->qpar;
+//
+//   double eta = gsl_vector_get (x, 0);
+//   double zeta = gsl_vector_get (x, 1);
+//
+//   double qz = Simulation.GetQzStart();
+//
+//   // double Normalisation;
+//   Simulation.SetEta(eta);
+//   Simulation.SetZeta(zeta);
+//   Simulation.ConvertUnitsCale();
+//
+//   size_t i;
+//
+//   for (i = 0; i < n; i++)
+//     {
+//       // /* Model Yi = A * exp(-lambda * i) + b */
+//       double Yi = (Simulation.CorrFuncApprox(rdata[i],0));
+//       gsl_vector_set (f, i, (Yi - y[i])/sigma[i]); //!!!!
+//     }
+//   return GSL_SUCCESS;
+// }
+//
+//
+// int
+// xi_dcorf (const gsl_vector * x, void *params,
+//          gsl_matrix * J)
+// {
+//   size_t n = ((struct datadiffuse *)params)->n;
+//
+//     double eta = gsl_vector_get (x, 0);
+//     double zeta = gsl_vector_get (x, 1);
+//     gsl_vector* xtmp = gsl_vector_calloc(2);
+//     gsl_vector* fzp = gsl_vector_calloc(n);
+//     gsl_vector* fzm = gsl_vector_calloc(n);
+//     gsl_vector* ftmp = gsl_vector_calloc(n);
+//     gsl_vector* fep = gsl_vector_calloc(n);
+//     gsl_vector* fem = gsl_vector_calloc(n);
+//
+//
+//     gsl_vector_memcpy(xtmp, x);
+//     gsl_vector_set(xtmp,0,eta+0.01);
+//     xi_f (xtmp, params, fep);
+//     gsl_vector_set(xtmp,0,eta-0.01);
+//     xi_f (xtmp, params, fem);
+//     gsl_vector_set(xtmp,0,eta);
+//
+//     gsl_vector_set(xtmp,1,zeta+1);
+//     xi_f (xtmp, params, fzp);
+//     gsl_vector_set(xtmp,1,zeta-1);
+//     xi_f (xtmp, params, fzm);
+//
+//     gsl_vector_set(xtmp,1,zeta);
+//     xi_f (xtmp, params, ftmp);
+//
+//   size_t i;
+//
+//   for (i = 0; i < n; i++)
+//     {
+//       double fzpi = gsl_vector_get (fzp, i);
+//       double fzmi = gsl_vector_get (fzm, i);
+//       double fepi = gsl_vector_get (fep, i);
+//       double femi = gsl_vector_get (fem, i);
+//       double ftmpi = gsl_vector_get (ftmp, i);
+//       double dfzi = ((fzpi-ftmpi)/1+(ftmpi-fzmi)/1)/2; //!!!
+//       double dfei = ((fepi-ftmpi)/.01+(ftmpi-femi)/.01)/2; //!!!
+//       gsl_matrix_set (J, i, 0, dfei/2);
+//       gsl_matrix_set (J, i, 1, dfzi/2);
+//     }
+//
+//     gsl_vector_free(fzp);
+//     gsl_vector_free(fzm);
+//     gsl_vector_free(ftmp);
+//     gsl_vector_free(fep);
+//     gsl_vector_free(fem);
+//     gsl_vector_free(xtmp);
+//   return GSL_SUCCESS;
+// }
+//
+// int
+// xi_corfdcorf (const gsl_vector * x, void *params,
+//           gsl_vector * f, gsl_matrix * J)
+// {
+//   xi_corf (x, params, f);
+//   xi_dcorf (x, params, J);
+//
+//   return GSL_SUCCESS;
+// }
 
 
 
@@ -397,19 +398,6 @@ int main(int argc, char const *argv[]) {
     Simulation.SetSigmaR(vm["sr"].as<double>());
     Simulation.SetAvgLz(vm["Lz"].as<double>());
     Simulation.SetSigmaZ(vm["sz"].as<double>());
-    strcpy(FileNameBase,vm["output"].as<std::string>().c_str());
-    strcpy(InputFile,vm["file"].as<std::string>().c_str());
-    Simulation.ReadDataFile(InputFile);
-  }
-  else if(SysModus==e_fitc){
-    if (!vm.count("zeta")||!vm.count("eta")||!vm.count("file")) {
-        std::cout << "Not enough arguments. The program requires to set zeta, eta, q1, qzb and file\n";
-        return(0);
-    }
-    std::cout<<"Selected Option: Fit Correlationfunction\nInitialize System...\n"<<std::endl;
-    Simulation.SetZeta(roundf(vm["zeta"].as<double>()*100)/100);
-    Simulation.SetEta(roundf(vm["eta"].as<double>()*100)/100);
-    // Simulation.SetQ1(roundf(vm["q1"].as<double>()*100)/100);
     strcpy(FileNameBase,vm["output"].as<std::string>().c_str());
     strcpy(InputFile,vm["file"].as<std::string>().c_str());
     Simulation.ReadDataFile(InputFile);
@@ -593,7 +581,7 @@ int main(int argc, char const *argv[]) {
            status = gsl_multifit_test_delta (s->dx, s->x,
                                              5e-4, 5e-4);
          }
-       while (status == GSL_CONTINUE && iter < 500);
+       while (status == GSL_CONTINUE && iter < 50);
        gsl_multifit_fdfsolver_jac(s,J);
        gsl_multifit_covar (J, 0.0, covar);
        // for (i = 0; i < n; i++)
@@ -654,119 +642,6 @@ int main(int argc, char const *argv[]) {
     std::cout<<"Calculation finished successful! Data are stored in: "<<FileName<<"\n"<<std::endl;
 
    }
-
-   else if(SysModus==e_fitc){
-
-        PrintProcessInfoHeader();
-         Simulation.PreProcessCorrFunc(CNMAX);
-         // PrintProcessInfoHeader();
-         // Simulation.PreProcessHr();
-         // Simulation.PreProcessHz(CNMAX);
-         // std::cout<<std::endl;
-         // std::cout<<std::endl;
-         // Simulation.PreProcessNSummation(Simulation.GetQzStart());
-         // Simulation.HankelTransformation(Simulation.GetQzStart());
-         // Simulation.PostProcessHankel();
-         std::cout<<std::endl;
-         PrintLine();
-         PrintFitTableHeader();
-         // double cftemp;
-         // for(double r=.5;r<10000;r=r+0.5){
-         //   cftemp = Simulation.CorrFuncApprox(r,0);
-         //   std::cout<<r<<"\t"<<cftemp<<std::endl;
-         // }
-         const gsl_multifit_fdfsolver_type *T;
-         gsl_multifit_fdfsolver *s;
-
-         int status;
-         size_t i, iter = 0;
-
-         const size_t n = Simulation.GetNumDataLines();
-         const size_t p = 2;
-
-         gsl_matrix *covar = gsl_matrix_alloc (p, p);
-         gsl_matrix *J = gsl_matrix_alloc (n, p);
-
-         double y[n],y2[n], sigma[n],sigma2[n], qpardata[n];
-
-         // std::cout<<"here"<<n<<std::endl;
-         // struct data d = { n, y, sigma};
-         struct datadiffuse d = { n, y,y2, sigma,sigma2,qpardata};
-
-         gsl_multifit_function_fdf f;
-
-         // double x_init[3] = { 1.0, 0.0, 0.0 };
-         double x_init[2] = { Simulation.GetEta(), Simulation.GetZeta()};
-
-         gsl_vector_view x = gsl_vector_view_array (x_init, p);
-
-
-
-         f.f = &xi_corf;
-         f.df = &xi_dcorf;
-         f.fdf = &xi_corfdcorf;
-         f.n = n;
-         f.p = p;
-         f.params = &d;
-
-         /* This is the data to be fitted */
-
-         for (i = 0; i < n; i++)
-           {
-             y[i] = Simulation.m_FitData[i];
-             qpardata[i] = Simulation.m_FitQr[i];
-             sigma[i] = Simulation.m_FitErrData[i];
-           };
-
-         gsl_vector* StartVals;
-         StartVals = gsl_vector_alloc(2);
-         // Output = gsl_vector_alloc(n);
-
-         gsl_vector_set(StartVals,0,.1);
-         gsl_vector_set(StartVals,1,80);
-
-         T = gsl_multifit_fdfsolver_lmsder;
-         s = gsl_multifit_fdfsolver_alloc (T, n, p);
-         gsl_multifit_fdfsolver_set (s, &f, &x.vector);
-
-         do
-           {
-             iter++;
-             status = gsl_multifit_fdfsolver_iterate (s);
-             PrintFitTableData(iter,gsl_vector_get (s->x, 0),gsl_vector_get (s->x, 1),gsl_blas_dnrm2 (s->f),1);
-
-             if (status)
-               break;
-
-             status = gsl_multifit_test_delta (s->dx, s->x,
-                                               1e-4, 1e-4);
-           }
-         while (status == GSL_CONTINUE && iter < 500);
-         gsl_multifit_fdfsolver_jac(s,J);
-         gsl_multifit_covar (J, 0.0, covar);
-
-       #define FIT(i) gsl_vector_get(s->x, i)
-       #define ERR(i) sqrt(gsl_matrix_get(covar,i,i))
-
-       Simulation.SetDEta(ERR(0));
-       Simulation.SetDZeta(ERR(1));
-       Simulation.ConvertUnitsCale();
-
-      gsl_multifit_fdfsolver_free (s);
-
-      PrintLine();
-      Simulation.ListSimParameters();
-      sprintf(FileName,"%s_cf_fitted.fit",FileNameBase);
-      BackupFile(FileName);
-      Simulation.WriteFitData(FileName);
-      sprintf(FileName,"%s_fitted.qr",FileNameBase);
-      Simulation.NormalizeQrScan();
-      BackupFile(FileName);
-      Simulation.WriteQrVector(FileName);
-      PrintLine();
-      std::cout<<"Calculation finished successful! Data are stored in: "<<FileName<<"\n"<<std::endl;
-
-     }
 
    else if (SysModus == e_cd){
 

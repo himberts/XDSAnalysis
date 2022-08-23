@@ -258,6 +258,9 @@ void DiffuseXRD::PreProcessNSummation(double qz){
    cudaFree(x);
    cudaFree(y);
    cudaFree(hz);
+   free(x_CPU);
+   free(y_CPU);
+   free(hz_CPU);
 }
 
 
@@ -315,6 +318,9 @@ void DiffuseXRD::HankelTransformation(double qz){
    cudaFree(x);
    cudaFree(y);
    cudaFree(hr);
+   free(x_CPU);
+   free(y_CPU);
+   free(hr_CPU);
 }
 
 
