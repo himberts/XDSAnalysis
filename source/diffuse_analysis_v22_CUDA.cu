@@ -485,7 +485,7 @@ int main(int argc, char const *argv[]) {
 
       PrintProcessInfoHeader();
        // Simulation.PreProcessCorrFunc(CNMAX);
-       Simulation.LoadCorrFunc("CorrelationFunctionTable_08112022.cf");
+       Simulation.LoadCorrFunc("/opt/genapp/XDSAnalysis/bin/CorrelationFunctionTable_08112022.cf");
        PrintProcessInfoHeader();
        Simulation.PreProcessHr();
        Simulation.PreProcessHz(CNMAX);
