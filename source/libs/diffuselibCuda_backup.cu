@@ -612,7 +612,7 @@ void DiffuseXRD::ConvertUnitsCale(){
 
 void DiffuseXRD::ReadDataFile(char* FileName){
   float datatmp, errdatatmp, datatmp2, errdatatmp2, qrtmp, relerror;
-  int NumDatPoints,NumHeaderLines;
+  int NumDatPoints;
   double q1tmp,qzbtmp,NormFactor,SubFactor;
   // double qzbtmp;
   char lineText[100];
@@ -621,31 +621,22 @@ void DiffuseXRD::ReadDataFile(char* FileName){
   //Read Header
   in.getline(lineText, 99);
   in.getline(lineText, 99);
-  sscanf(lineText, "NUMLINES=%d",&NumHeaderLines);
   in.getline(lineText, 99);
   in.getline(lineText, 99);
   sscanf(lineText, "NUMDATLINES=%d",&NumDatPoints);
   in.getline(lineText, 99);
   sscanf(lineText, "Q1=%lf",&q1tmp);
-  SetQ1(q1tmp);
-  m_NumFitDatLines = NumDatPoints;
-  m_NumFitDatSets = NumHeaderLines-6;
-  m_FitData_comb = gsl_matrix_alloc (m_NumFitDatSets, m_NumFitDatLines);
-  m_FitData_qzVals = gsl_vector_alloc (m_NumFitDatSets);
-
-  for(k=6;k<=NumHeaderLines-1;k++){
-    in.getline(lineText, 99);
-    sscanf(lineText, "QZSTART=%lf",&qzbtmp);
-    gsl_vector_set(m_FitData_qzVals,k-6,qzbtmp);
-  }
-  // in.getline(lineText, 99);
-  // sscanf(lineText, "QZSTART=%lf",&qzbtmp);
-  m_qzstart = gsl_vector_get(m_FitData_qzVals,0);
-  // in.getline(lineText, 99);
-  // sscanf(lineText, "QZSTART=%lf",&qzbtmp);
-  m_qzstart2 = gsl_vector_get(m_FitData_qzVals,1);
   in.getline(lineText, 99);
+  sscanf(lineText, "QZSTART=%lf",&qzbtmp);
+  in.getline(lineText, 99);
+  m_qzstart = qzbtmp;
+  sscanf(lineText, "QZSTART=%lf",&qzbtmp);
+  in.getline(lineText, 99);
+  m_qzstart2 = qzbtmp;
 
+  m_NumFitDatLines=NumDatPoints;
+
+  SetQ1(q1tmp);
 
   //Allocate Memory
   m_FitQr = new double [m_NumFitDatLines];

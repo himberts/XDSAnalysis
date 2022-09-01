@@ -86,6 +86,9 @@ public:
   double *m_FitErrData;
   double *m_FitData2;
   double *m_FitQr2;
+  gsl_matrix *m_FitData_comb;
+  gsl_matrix *m_FitData_qzVals;
+  int m_NumFitDatSets;
   double *m_FitErrData2;
   double *m_QrScan;
   DiffuseXRD(double Dspacing, double zeta, double eta){
