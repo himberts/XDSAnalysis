@@ -126,7 +126,7 @@ xi_f (const gsl_vector * x, void *params,
       gsl_vector_set(xiS1, i, 0); //!!!!
   }
 
-  for(k = 0;k<data->size1;k++){
+  for(int k = 0;k<(data->size1);k++){
     qz = Simulation.GetQzStart();
     Simulation.ConvertUnitsCale();
     Simulation.PreProcessNSummation(qz);
@@ -160,7 +160,7 @@ xi_f (const gsl_vector * x, void *params,
   //     gsl_vector_set (xiS2, i, (Yi - gsl_matrix_get(data,1,i))/gsl_matrix_get(sigma,1,i)); //!!!!
   // }
 
-  for (i = 0; i < n; i++)
+  for (size_t i = 0; i < n; i++)
   {
       // gsl_vector_set (f, i, gsl_vector_get(xiS1, i)+ gsl_vector_get(xiS2, i));
       gsl_vector_set (f, i, gsl_vector_get(xiS1, i));
