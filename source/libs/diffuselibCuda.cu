@@ -664,17 +664,27 @@ void DiffuseXRD::ReadDataFile(char* FileName){
         std::string token;
         // int tempval;
         // stringstream ss(lineText); // convert string into a stream
+        int ColumnCount = 0
         while (std::getline(ss, token, ' '))     // convert each word on the stream into an int
         {
-            std::cout<<token<<",";
+            if(ColumnCount==0){
+              std::cout<<token<<",";
+            }
+            else{
+              if(ColumnCount%2==1){
+                std::cout<<token<<",";
+                gsl_matrix_set(m_FitData_comb,ColumnCount-1,k,(double)datatmp);
+              }
+              else{
+                std::cout<<token<<",";
+                gsl_matrix_set(m_FitErrData_comb,ColumnCount-2,k,(double)errdatatmp);
+              }
+            }
+            ColumnCount++;
         }
         std::cout<<std::endl;
         // std::cout<<lineText<<std::endl;
         sscanf(lineText, "%f\t%f\t%f\t%f\t%f",&qrtmp,&datatmp,&errdatatmp,&datatmp2,&errdatatmp2);
-        gsl_matrix_set(m_FitData_comb,0,k,(double)datatmp);
-        gsl_matrix_set(m_FitData_comb,1,k,(double)datatmp2);
-        gsl_matrix_set(m_FitErrData_comb,0,k,(double)errdatatmp);
-        gsl_matrix_set(m_FitErrData_comb,1,k,(double)errdatatmp2);
         m_FitQr[k] = (double)qrtmp;
         m_FitData[k] = (double)datatmp;
         m_FitErrData[k] = (double)errdatatmp;
