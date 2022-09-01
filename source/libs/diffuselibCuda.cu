@@ -673,11 +673,11 @@ void DiffuseXRD::ReadDataFile(char* FileName){
             else{
               if(ColumnCount%2==1){
                 std::cout<<token<<" data"<<std::endl;
-                gsl_matrix_set(m_FitData_comb,floor(ColumnCount/2),k,(double)(token.c_str()));
+                gsl_matrix_set(m_FitData_comb,floor(ColumnCount/2),k,(double)(atof(token.c_str())));
               }
               else{
                 std::cout<<token<<" error"<<std::endl;
-                gsl_matrix_set(m_FitErrData_comb,floor(ColumnCount/2)-1,k,(double)(token.c_str()));
+                gsl_matrix_set(m_FitErrData_comb,floor(ColumnCount/2)-1,k,(double)(atof(token.c_str())));
               }
             }
             ColumnCount++;
