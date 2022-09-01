@@ -687,19 +687,19 @@ void DiffuseXRD::ReadDataFile(char* FileName){
             }
             ColumnCount++;
         }
-        std::cout<<std::endl;
-        // std::cout<<lineText<<std::endl;
-        sscanf(lineText, "%f\t%f\t%f\t%f\t%f",&qrtmp,&datatmp,&errdatatmp,&datatmp2,&errdatatmp2);
-        m_FitQr[k] = (double)qrtmp;
-        m_FitData[k] = (double)datatmp;
-        m_FitErrData[k] = (double)errdatatmp;
-        m_FitData2[k] = (double)datatmp2;
-        m_FitErrData2[k] = (double)errdatatmp2;
+        // std::cout<<std::endl;
+        // // std::cout<<lineText<<std::endl;
+        // sscanf(lineText, "%f\t%f\t%f\t%f\t%f",&qrtmp,&datatmp,&errdatatmp,&datatmp2,&errdatatmp2);
+        // // m_FitQr[k] = (double)qrtmp;
+        // m_FitData[k] = (double)datatmp;
+        // m_FitErrData[k] = (double)errdatatmp;
+        // m_FitData2[k] = (double)datatmp2;
+        // m_FitErrData2[k] = (double)errdatatmp2;
         // std::cout<<m_FitQr[k]<<"\t"<<m_FitData[k]<<m_FitQr[k]<<"\t"<<m_FitData2[k]<<std::endl;
     }
     in.close();
-    std::cout<<std::endl;
-    std::cout<<std::endl;
+    // std::cout<<std::endl;
+    // std::cout<<std::endl;
     for( int l = 0;l<2;l++){
 
       NormFactor = gsl_matrix_get(m_FitData_comb,l,0);
@@ -721,50 +721,50 @@ void DiffuseXRD::ReadDataFile(char* FileName){
     }
 
 
-    SubFactor = 0;//m_FitData[NumDatPoints-1];
-    std::cout<<"SubFactor Data = "<<SubFactor<<std::endl;
-    NormFactor = m_FitData[0]-SubFactor;
-    for(int k =0;k<NumDatPoints;k++){
-          relerror = m_FitErrData[k]/m_FitData[k];
-          if (m_FitData[k] ==0)
-          {
-            relerror = 0.01;
-          }
-          m_FitData[k]    = (m_FitData[k]-SubFactor)/NormFactor;
-          // m_FitErrData[k] = 0.05;
-          m_FitErrData[k] = relerror*m_FitData[k];
-          if(m_FitErrData[k]<0.002){
-            m_FitErrData[k] = 0.01;
-          }
-          //   m_FitErrData[k] = 0.01*m_FitData[k];
-          // }
-          // else{
-          //   m_FitErrData[k] = 0.01;
-          // }
-          std::cout<<m_FitData[k]<<"\t"<<NormFactor<<std::endl;
-      }
-    SubFactor = 0;//m_FitData[NumDatPoints-1];
-    std::cout<<"SubFactor Data = "<<SubFactor<<std::endl;
-    NormFactor = m_FitData2[0]-SubFactor;
-    for(int k =0;k<NumDatPoints;k++){
-          relerror = m_FitErrData2[k]/m_FitData2[k];
-          if (m_FitData2[k] ==0)
-          {
-            relerror = 0.01;
-          }
-          m_FitData2[k]    = (m_FitData2[k]-SubFactor)/NormFactor;
-          // m_FitErrData[k] = 0.05;
-          m_FitErrData2[k] = relerror*m_FitData2[k];
-          if(m_FitErrData2[k]<0.002){
-            m_FitErrData2[k] = 0.01;
-          }
-          //   m_FitErrData[k] = 0.01*m_FitData[k];
-          // }
-          // else{
-          //   m_FitErrData[k] = 0.01;
-          // }
-          std::cout<<m_FitData2[k]<<"\t"<<NormFactor<<std::endl;
-      }
+    // SubFactor = 0;//m_FitData[NumDatPoints-1];
+    // std::cout<<"SubFactor Data = "<<SubFactor<<std::endl;
+    // NormFactor = m_FitData[0]-SubFactor;
+    // for(int k =0;k<NumDatPoints;k++){
+    //       relerror = m_FitErrData[k]/m_FitData[k];
+    //       if (m_FitData[k] ==0)
+    //       {
+    //         relerror = 0.01;
+    //       }
+    //       m_FitData[k]    = (m_FitData[k]-SubFactor)/NormFactor;
+    //       // m_FitErrData[k] = 0.05;
+    //       m_FitErrData[k] = relerror*m_FitData[k];
+    //       if(m_FitErrData[k]<0.002){
+    //         m_FitErrData[k] = 0.01;
+    //       }
+    //       //   m_FitErrData[k] = 0.01*m_FitData[k];
+    //       // }
+    //       // else{
+    //       //   m_FitErrData[k] = 0.01;
+    //       // }
+    //       std::cout<<m_FitData[k]<<"\t"<<NormFactor<<std::endl;
+    //   }
+    // SubFactor = 0;//m_FitData[NumDatPoints-1];
+    // std::cout<<"SubFactor Data = "<<SubFactor<<std::endl;
+    // NormFactor = m_FitData2[0]-SubFactor;
+    // for(int k =0;k<NumDatPoints;k++){
+    //       relerror = m_FitErrData2[k]/m_FitData2[k];
+    //       if (m_FitData2[k] ==0)
+    //       {
+    //         relerror = 0.01;
+    //       }
+    //       m_FitData2[k]    = (m_FitData2[k]-SubFactor)/NormFactor;
+    //       // m_FitErrData[k] = 0.05;
+    //       m_FitErrData2[k] = relerror*m_FitData2[k];
+    //       if(m_FitErrData2[k]<0.002){
+    //         m_FitErrData2[k] = 0.01;
+    //       }
+    //       //   m_FitErrData[k] = 0.01*m_FitData[k];
+    //       // }
+    //       // else{
+    //       //   m_FitErrData[k] = 0.01;
+    //       // }
+    //       std::cout<<m_FitData2[k]<<"\t"<<NormFactor<<std::endl;
+    //   }
 }
 
 
