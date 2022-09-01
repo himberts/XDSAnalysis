@@ -76,6 +76,7 @@ private:
   double *m_HankelTransform;
   double (*m_2DData)[2*QRuns];
   int m_NumFitDatLines;
+  int m_NumFitDatSets;
   double m_xi2;
 
 public:
@@ -89,7 +90,6 @@ public:
   gsl_matrix *m_FitData_comb;
   gsl_matrix *m_FitErrData_comb;
   gsl_vector *m_FitData_qzVals;
-  int m_NumFitDatSets;
   double *m_FitErrData2;
   double *m_QrScan;
   DiffuseXRD(double Dspacing, double zeta, double eta){
@@ -176,6 +176,7 @@ public:
   double GetAvgLz();
   double GetSigmaZ();
   double GetNumDataLines();
+  double GetNumDataSets();
   double GetXI2();
   double XiSquareCuda(const gsl_vector*, void*);
   void WriteQrVector(char*);

@@ -591,6 +591,10 @@ double DiffuseXRD::GetNumDataLines(){
   return(m_NumFitDatLines);
 }
 
+double DiffuseXRD::GetNumDataSets(){
+  return(m_NumFitDatSets);
+}
+
 double DiffuseXRD::GetXI2(){
   return(m_xi2);
 }

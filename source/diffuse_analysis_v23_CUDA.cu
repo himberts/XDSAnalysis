@@ -514,7 +514,7 @@ int main(int argc, char const *argv[]) {
        double y[n],y2[n], sigma[n],sigma2[n], qpardata[n];
        gsl_matrix * FitData;
 
-       FitData = gsl_matrix_alloc (Simulation.m_NumFitDatSets, Simulation.m_NumFitDatLines);
+       FitData = gsl_matrix_alloc (Simulation.GetNumDataSets(), Simulation.GetNumDataLines());
        gsl_matrix_memcpy(FitData, Simulation.m_FitData_comb);
        // std::cout<<"here"<<n<<std::endl;
        // struct data d = { n, y, sigma};
