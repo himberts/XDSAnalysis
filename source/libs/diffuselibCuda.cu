@@ -663,8 +663,9 @@ void DiffuseXRD::ReadDataFile(char* FileName){
         stringstream ss(lineText); // convert string into a stream
         while (ss >> tempval)     // convert each word on the stream into an int
         {
-            std::cout<<tempval<<std::endl;
+            std::cout<<tempval<<",";
         }
+        std::cout<<std::endl;
         // std::cout<<lineText<<std::endl;
         sscanf(lineText, "%f\t%f\t%f\t%f\t%f",&qrtmp,&datatmp,&errdatatmp,&datatmp2,&errdatatmp2);
         gsl_matrix_set(m_FitData_comb,0,k,(double)datatmp);
@@ -679,7 +680,8 @@ void DiffuseXRD::ReadDataFile(char* FileName){
         // std::cout<<m_FitQr[k]<<"\t"<<m_FitData[k]<<m_FitQr[k]<<"\t"<<m_FitData2[k]<<std::endl;
     }
     in.close();
-
+    std::cout<<std::endl;
+    std::cout<<std::endl;
     for( int l = 0;l<2;l++){
 
       NormFactor = gsl_matrix_get(m_FitData_comb,l,0);
