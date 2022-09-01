@@ -657,7 +657,7 @@ void DiffuseXRD::ReadDataFile(char* FileName){
 
   //Read Data
   std::cout<<m_NumFitDatLines<<std::endl;
-  for(int k =0;k<m_NumFitDatLines;k++){
+  for(int k =0; k<m_NumFitDatLines; k++){
         in.getline(lineText, 99);
         // std::cout<<lineText<<std::endl;
         sscanf(lineText, "%f\t%f\t%f\t%f\t%f",&qrtmp,&datatmp,&errdatatmp,&datatmp2,&errdatatmp2);
@@ -674,7 +674,7 @@ void DiffuseXRD::ReadDataFile(char* FileName){
     }
     in.close();
 
-    for( int l = 1;l<m_FitData_qzVals;l++){
+    for( int l = 1;l<m_NumFitDatSets;l++){
 
       NormFactor = gsl_matrix_get(m_FitData_comb,l,0);
       for(int k =0;k<m_NumFitDatLines;k++){
