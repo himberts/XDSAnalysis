@@ -101,7 +101,7 @@ xi_f (const gsl_vector * x, void *params,
   size_t n = ((struct datadiffuse *)params)->n;
   // double *y = ((struct datadiffuse *)params)->y;
   // double *y2 = ((struct datadiffuse *)params)->y2;
-  gsl_matrix data = ((struct datadiffuse *)params)->data
+  gsl_matrix *data = ((struct datadiffuse *)params)->data;
   double *sigma = ((struct datadiffuse *) params)->sigma;
   double *sigma2 = ((struct datadiffuse *) params)->sigma2;
   double *qpardata = ((struct datadiffuse *) params)->qpar;
