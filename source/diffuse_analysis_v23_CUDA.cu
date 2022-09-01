@@ -60,8 +60,9 @@ struct datadiffuse {
   // double * y;
   // double * y2;
   gsl_matrix * data;
-  double * sigma;
-  double * sigma2;
+  gsl_matrix * sigma;
+  // double * sigma;
+  // double * sigma2;
   double * qpar;
 };
 
@@ -102,8 +103,9 @@ xi_f (const gsl_vector * x, void *params,
   // double *y = ((struct datadiffuse *)params)->y;
   // double *y2 = ((struct datadiffuse *)params)->y2;
   gsl_matrix *data = ((struct datadiffuse *)params)->data;
-  double *sigma = ((struct datadiffuse *) params)->sigma;
-  double *sigma2 = ((struct datadiffuse *) params)->sigma2;
+  gsl_matrix *sigma = ((struct datadiffuse *)params)->sigma;
+  // double *sigma = ((struct datadiffuse *) params)->sigma;
+  // double *sigma2 = ((struct datadiffuse *) params)->sigma2;
   double *qpardata = ((struct datadiffuse *) params)->qpar;
 
   gsl_vector* xiS1 = gsl_vector_calloc(n);
@@ -132,7 +134,7 @@ xi_f (const gsl_vector * x, void *params,
   for (i = 0; i < n; i++)
   {
       double Yi = (Simulation.InterpolateQrScan(qpardata[i])-SubFactor)/Normalisation;
-      gsl_vector_set (xiS1, i, (Yi - gsl_matrix_get(data,0,i))/sigma[i]); //!!!!
+      gsl_vector_set (xiS1, i, (Yi - gsl_matrix_get(data,0,i))/gsl_matrix_get(sigma,0,i)); //!!!!
   }
 
   // qz = 0.3306;
@@ -150,7 +152,7 @@ xi_f (const gsl_vector * x, void *params,
   for (i = 0; i < n; i++)
   {
       double Yi = (Simulation.InterpolateQrScan(qpardata[i])-SubFactor)/Normalisation;
-      gsl_vector_set (xiS2, i, (Yi - gsl_matrix_get(data,1,i))/sigma2[i]); //!!!!
+      gsl_vector_set (xiS2, i, (Yi - gsl_matrix_get(data,1,i))/gsl_matrix_get(sigma,0,i)); //!!!!
   }
 
   for (i = 0; i < n; i++)
@@ -513,12 +515,15 @@ int main(int argc, char const *argv[]) {
 
        double y[n],y2[n], sigma[n],sigma2[n], qpardata[n];
        gsl_matrix * FitData;
+       gsl_matrix * ErrData;
 
        FitData = gsl_matrix_alloc (Simulation.GetNumDataSets(), Simulation.GetNumDataLines());
+       ErrData = gsl_matrix_alloc (Simulation.GetNumDataSets(), Simulation.GetNumDataLines());
        gsl_matrix_memcpy(FitData, Simulation.m_FitData_comb);
+       gsl_matrix_memcpy(ErrData, Simulation.m_FitErrData_comb);
        // std::cout<<"here"<<n<<std::endl;
        // struct data d = { n, y, sigma};
-       struct datadiffuse d = { n, FitData, sigma,sigma2,qpardata};
+       struct datadiffuse d = { n, FitData, ErrData,qpardata};
 
        gsl_multifit_function_fdf f;
 
@@ -543,8 +548,8 @@ int main(int argc, char const *argv[]) {
            // y[i] = Simulation.m_FitData[i];
            // y2[i] = Simulation.m_FitData2[i];
            qpardata[i] = Simulation.m_FitQr[i];
-           sigma[i] = Simulation.m_FitErrData[i];
-           sigma2[i] = Simulation.m_FitErrData2[i];
+           // sigma[i] = Simulation.m_FitErrData[i];
+           // sigma2[i] = Simulation.m_FitErrData2[i];
          };
 
        gsl_vector* StartVals;
