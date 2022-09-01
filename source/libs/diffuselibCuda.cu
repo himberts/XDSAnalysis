@@ -664,7 +664,7 @@ void DiffuseXRD::ReadDataFile(char* FileName){
         std::string token;
         // int tempval;
         // stringstream ss(lineText); // convert string into a stream
-        while (std::getline(ss, token, "\t"))     // convert each word on the stream into an int
+        while (std::getline(ss, token, ' '))     // convert each word on the stream into an int
         {
             std::cout<<token<<",";
         }
