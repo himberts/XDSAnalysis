@@ -662,8 +662,8 @@ void DiffuseXRD::ReadDataFile(char* FileName){
         // std::cout<<lineText<<std::endl;
         sscanf(lineText, "%f\t%f\t%f\t%f\t%f",&qrtmp,&datatmp,&errdatatmp,&datatmp2,&errdatatmp2);
         gsl_matrix_set(m_FitData_comb,0,k,(double)datatmp);
-        gsl_matrix_set(m_FitData_comb,1,k,(double)errdatatmp);
-        gsl_matrix_set(m_FitErrData_comb,0,k,(double)datatmp);
+        gsl_matrix_set(m_FitData_comb,1,k,(double)datatmp2);
+        gsl_matrix_set(m_FitErrData_comb,0,k,(double)errdatatmp);
         gsl_matrix_set(m_FitErrData_comb,1,k,(double)errdatatmp2);
         m_FitQr[k] = (double)qrtmp;
         m_FitData[k] = (double)datatmp;
