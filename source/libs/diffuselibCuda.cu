@@ -659,6 +659,12 @@ void DiffuseXRD::ReadDataFile(char* FileName){
   std::cout<<m_NumFitDatLines<<std::endl;
   for(int k =0; k<m_NumFitDatLines; k++){
         in.getline(lineText, 99);
+        int tempval;
+        stringstream ss(lineText); // convert string into a stream
+        while (ss >> tempval)     // convert each word on the stream into an int
+        {
+            std::cout<<tempval<<std::endl;
+        }
         // std::cout<<lineText<<std::endl;
         sscanf(lineText, "%f\t%f\t%f\t%f\t%f",&qrtmp,&datatmp,&errdatatmp,&datatmp2,&errdatatmp2);
         gsl_matrix_set(m_FitData_comb,0,k,(double)datatmp);
