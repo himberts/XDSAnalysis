@@ -110,7 +110,9 @@ xi_f (const gsl_vector * x, void *params,
 
   gsl_vector* xiS1 = gsl_vector_calloc(n);
   gsl_vector* xiS2 = gsl_vector_calloc(n);
-
+  gsl_vector* qz_vec = gsl_vector_calloc(data->size1);
+  gsl_vector_set (qz_vec, 0,Simulation.GetQzStart());
+  gsl_vector_set (qz_vec, 1,Simulation.GetQzStart2());
   double eta = gsl_vector_get (x, 0);
   double zeta = gsl_vector_get (x, 1);
 
@@ -127,7 +129,7 @@ xi_f (const gsl_vector * x, void *params,
   }
 
   for(int k = 0;k<(data->size1);k++){
-    qz = Simulation.GetQzStart();
+    qz = gsl_vector_get (qz_vec, k);
     Simulation.ConvertUnitsCale();
     Simulation.PreProcessNSummation(qz);
     Simulation.HankelTransformation(qz);
@@ -138,7 +140,7 @@ xi_f (const gsl_vector * x, void *params,
     for (size_t i = 0; i < n; i++)
     {
         double Yi = (Simulation.InterpolateQrScan(qpardata[i])-SubFactor)/Normalisation;
-        gsl_vector_set(xiS1, i, gsl_vector_get(xiS1, i)+(Yi - gsl_matrix_get(data,0,i))/gsl_matrix_get(sigma,0,i)); //!!!!
+        gsl_vector_set(xiS1, i, gsl_vector_get(xiS1, i)+(Yi - gsl_matrix_get(data,k,i))/gsl_matrix_get(sigma,k,i)); //!!!!
     }
 
   }
