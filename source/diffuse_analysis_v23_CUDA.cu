@@ -57,8 +57,9 @@ DiffuseXRD Simulation(62.8319, 1, 1);
 
 struct datadiffuse {
   size_t n;
-  double * y;
-  double * y2;
+  // double * y;
+  // double * y2;
+  gsl_matrix * data;
   double * sigma;
   double * sigma2;
   double * qpar;
@@ -98,8 +99,9 @@ xi_f (const gsl_vector * x, void *params,
         gsl_vector * f)
 {
   size_t n = ((struct datadiffuse *)params)->n;
-  double *y = ((struct datadiffuse *)params)->y;
-  double *y2 = ((struct datadiffuse *)params)->y2;
+  // double *y = ((struct datadiffuse *)params)->y;
+  // double *y2 = ((struct datadiffuse *)params)->y2;
+  gsl_matrix data = ((struct datadiffuse *)params)->data
   double *sigma = ((struct datadiffuse *) params)->sigma;
   double *sigma2 = ((struct datadiffuse *) params)->sigma2;
   double *qpardata = ((struct datadiffuse *) params)->qpar;
@@ -130,7 +132,7 @@ xi_f (const gsl_vector * x, void *params,
   for (i = 0; i < n; i++)
   {
       double Yi = (Simulation.InterpolateQrScan(qpardata[i])-SubFactor)/Normalisation;
-      gsl_vector_set (xiS1, i, (Yi - y[i])/sigma[i]); //!!!!
+      gsl_vector_set (xiS1, i, (Yi - gsl_matrix_get(data,0,i))/sigma[i]); //!!!!
   }
 
   // qz = 0.3306;
@@ -148,7 +150,7 @@ xi_f (const gsl_vector * x, void *params,
   for (i = 0; i < n; i++)
   {
       double Yi = (Simulation.InterpolateQrScan(qpardata[i])-SubFactor)/Normalisation;
-      gsl_vector_set (xiS2, i, (Yi - y2[i])/sigma2[i]); //!!!!
+      gsl_vector_set (xiS2, i, (Yi - gsl_matrix_get(data,1,i))/sigma2[i]); //!!!!
   }
 
   for (i = 0; i < n; i++)
@@ -510,10 +512,12 @@ int main(int argc, char const *argv[]) {
        gsl_matrix *J = gsl_matrix_alloc (n, p);
 
        double y[n],y2[n], sigma[n],sigma2[n], qpardata[n];
+       gsl_matrix * FitData;
 
+       gsl_matrix_memcpy(FitData, Simulation.m_FitData_comb);
        // std::cout<<"here"<<n<<std::endl;
        // struct data d = { n, y, sigma};
-       struct datadiffuse d = { n, y, y2, sigma,sigma2,qpardata};
+       struct datadiffuse d = { n, FitData, sigma,sigma2,qpardata};
 
        gsl_multifit_function_fdf f;
 
@@ -535,8 +539,8 @@ int main(int argc, char const *argv[]) {
 
        for (i = 0; i < n; i++)
          {
-           y[i] = Simulation.m_FitData[i];
-           y2[i] = Simulation.m_FitData2[i];
+           // y[i] = Simulation.m_FitData[i];
+           // y2[i] = Simulation.m_FitData2[i];
            qpardata[i] = Simulation.m_FitQr[i];
            sigma[i] = Simulation.m_FitErrData[i];
            sigma2[i] = Simulation.m_FitErrData2[i];
