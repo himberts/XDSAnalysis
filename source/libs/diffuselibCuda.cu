@@ -637,6 +637,7 @@ void DiffuseXRD::ReadDataFile(char* FileName){
   m_FitData_comb = gsl_matrix_alloc (m_NumFitDatSets, m_NumFitDatLines);
   m_FitErrData_comb = gsl_matrix_alloc (m_NumFitDatSets, m_NumFitDatLines);
   m_FitData_qzVals = gsl_vector_alloc (m_NumFitDatSets);
+  // m_FitData_qparVals = gsl_vector_alloc (m_NumFitDatLines);
 
   for(int k=6;k<=NumHeaderLines-1;k++){
     in.getline(lineText, 99);
@@ -672,7 +673,7 @@ void DiffuseXRD::ReadDataFile(char* FileName){
         while (std::getline(ss, token, ' '))     // convert each word on the stream into an int
         {
             if(ColumnCount==0){
-
+              m_FitQr[k] = (double)(atof(token.c_str()));
             }
             else{
               if(ColumnCount%2==1){

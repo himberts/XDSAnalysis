@@ -90,6 +90,7 @@ public:
   gsl_matrix *m_FitData_comb;
   gsl_matrix *m_FitErrData_comb;
   gsl_vector *m_FitData_qzVals;
+  // gsl_vector *m_FitData_qparVals;
   double *m_FitErrData2;
   double *m_QrScan;
   DiffuseXRD(double Dspacing, double zeta, double eta){
