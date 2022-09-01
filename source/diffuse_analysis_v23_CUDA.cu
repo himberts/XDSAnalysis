@@ -119,45 +119,51 @@ xi_f (const gsl_vector * x, void *params,
   double Normalisation;
   Simulation.SetEta(eta);
   Simulation.SetZeta(zeta);
+  double SubFactor = 0;
 
-  qz = Simulation.GetQzStart();
-  // std::cout<<qz<<std::endl;
-  Simulation.ConvertUnitsCale();
-  Simulation.PreProcessNSummation(qz);
-  Simulation.HankelTransformation(qz);
-  Simulation.PostProcessHankel();
-  double SubFactor = 0;//Simulation.InterpolateQrScan(qpardata[n-1]);
-
-  Normalisation = Simulation.InterpolateQrScan(qpardata[0])-SubFactor;
-  size_t i;
-
-  for (i = 0; i < n; i++)
+  for (size_t i = 0; i < n; i++)
   {
-      double Yi = (Simulation.InterpolateQrScan(qpardata[i])-SubFactor)/Normalisation;
-      gsl_vector_set (xiS1, i, (Yi - gsl_matrix_get(data,0,i))/gsl_matrix_get(sigma,0,i)); //!!!!
+      gsl_vector_set(xiS1, i, 0); //!!!!
   }
 
+  for(k = 0;k<data->size1;k++){
+    qz = Simulation.GetQzStart();
+    Simulation.ConvertUnitsCale();
+    Simulation.PreProcessNSummation(qz);
+    Simulation.HankelTransformation(qz);
+    Simulation.PostProcessHankel();
+    Normalisation = Simulation.InterpolateQrScan(qpardata[0])-SubFactor;
+    // size_t i;
+
+    for (size_t i = 0; i < n; i++)
+    {
+        double Yi = (Simulation.InterpolateQrScan(qpardata[i])-SubFactor)/Normalisation;
+        gsl_vector_set(xiS1, i, gsl_vector_get(xiS1, i)+(Yi - gsl_matrix_get(data,0,i))/gsl_matrix_get(sigma,0,i)); //!!!!
+    }
+
+  }
   // qz = 0.3306;
-  qz = Simulation.GetQzStart2();
-  // std::cout<<qz<<std::endl;
-  Simulation.ConvertUnitsCale();
-  Simulation.PreProcessNSummation(qz);
-  Simulation.HankelTransformation(qz);
-  Simulation.PostProcessHankel();
-  SubFactor = 0;//Simulation.InterpolateQrScan(qpardata[n-1]);
-
-  Normalisation = Simulation.InterpolateQrScan(qpardata[0])-SubFactor;
-  // size_t i;
+  // qz = Simulation.GetQzStart2();
+  // // std::cout<<qz<<std::endl;
+  // Simulation.ConvertUnitsCale();
+  // Simulation.PreProcessNSummation(qz);
+  // Simulation.HankelTransformation(qz);
+  // Simulation.PostProcessHankel();
+  // SubFactor = 0;//Simulation.InterpolateQrScan(qpardata[n-1]);
+  //
+  // Normalisation = Simulation.InterpolateQrScan(qpardata[0])-SubFactor;
+  // // size_t i;
+  //
+  // for (i = 0; i < n; i++)
+  // {
+  //     double Yi = (Simulation.InterpolateQrScan(qpardata[i])-SubFactor)/Normalisation;
+  //     gsl_vector_set (xiS2, i, (Yi - gsl_matrix_get(data,1,i))/gsl_matrix_get(sigma,1,i)); //!!!!
+  // }
 
   for (i = 0; i < n; i++)
   {
-      double Yi = (Simulation.InterpolateQrScan(qpardata[i])-SubFactor)/Normalisation;
-      gsl_vector_set (xiS2, i, (Yi - gsl_matrix_get(data,1,i))/gsl_matrix_get(sigma,1,i)); //!!!!
-  }
-
-  for (i = 0; i < n; i++)
-  {
-      gsl_vector_set (f, i, gsl_vector_get(xiS1, i)+ gsl_vector_get(xiS2, i));
+      // gsl_vector_set (f, i, gsl_vector_get(xiS1, i)+ gsl_vector_get(xiS2, i));
+      gsl_vector_set (f, i, gsl_vector_get(xiS1, i));
   }
 
   gsl_vector_free(xiS1);
