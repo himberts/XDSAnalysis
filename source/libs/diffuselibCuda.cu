@@ -668,16 +668,16 @@ void DiffuseXRD::ReadDataFile(char* FileName){
         while (std::getline(ss, token, ' '))     // convert each word on the stream into an int
         {
             if(ColumnCount==0){
-              std::cout<<token<<",";
+
             }
             else{
               if(ColumnCount%2==1){
-                std::cout<<token<<",";
-                gsl_matrix_set(m_FitData_comb,floor(ColumnCount/2),k,(double)datatmp);
+                std::cout<<token<<" data"<<std::endl;
+                gsl_matrix_set(m_FitData_comb,floor(ColumnCount/2),k,(double)token);
               }
               else{
-                std::cout<<token<<",";
-                gsl_matrix_set(m_FitErrData_comb,floor(ColumnCount/2)-1,k,(double)errdatatmp);
+                std::cout<<token<<" error"<<std::endl;
+                gsl_matrix_set(m_FitErrData_comb,floor(ColumnCount/2)-1,k,(double)token);
               }
             }
             ColumnCount++;
