@@ -661,10 +661,10 @@ void DiffuseXRD::ReadDataFile(char* FileName){
         in.getline(lineText, 99);
         // std::cout<<lineText<<std::endl;
         sscanf(lineText, "%f\t%f\t%f\t%f\t%f",&qrtmp,&datatmp,&errdatatmp,&datatmp2,&errdatatmp2);
-        gsl_matrix_set(m_FitData_comb,0,k,(double)datatmp)
-        gsl_matrix_set(m_FitData_comb,1,k,(double)errdatatmp)
-        gsl_matrix_set(m_FitErrData_comb,0,k,(double)datatmp)
-        gsl_matrix_set(m_FitErrData_comb,1,k,(double)errdatatmp2)
+        gsl_matrix_set(m_FitData_comb,0,k,(double)datatmp);
+        gsl_matrix_set(m_FitData_comb,1,k,(double)errdatatmp);
+        gsl_matrix_set(m_FitErrData_comb,0,k,(double)datatmp);
+        gsl_matrix_set(m_FitErrData_comb,1,k,(double)errdatatmp2);
         m_FitQr[k] = (double)qrtmp;
         m_FitData[k] = (double)datatmp;
         m_FitErrData[k] = (double)errdatatmp;
@@ -679,8 +679,8 @@ void DiffuseXRD::ReadDataFile(char* FileName){
       NormFactor = gsl_matrix_get(m_FitData_comb,l,0);
       for(int k =0;k<m_NumFitDatLines;k++){
 
-            gsl_matrix_get(m_FitData_comb,l,k)
-            gsl_matrix_get(m_FitErrData_comb,l,k)
+            gsl_matrix_get(m_FitData_comb,l,k);
+            gsl_matrix_get(m_FitErrData_comb,l,k);
 
             relerror = gsl_matrix_get(m_FitErrData_comb,l,k)/gsl_matrix_get(m_FitData_comb,l,k);
             if (gsl_matrix_get(m_FitData_comb,l,k) ==0)
