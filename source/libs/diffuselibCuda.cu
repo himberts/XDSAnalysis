@@ -674,13 +674,10 @@ void DiffuseXRD::ReadDataFile(char* FileName){
     }
     in.close();
 
-    for( int l = 1;l<m_NumFitDatSets;l++){
+    for( int l = 0;l<2;l++){
 
       NormFactor = gsl_matrix_get(m_FitData_comb,l,0);
       for(int k =0;k<m_NumFitDatLines;k++){
-
-            gsl_matrix_get(m_FitData_comb,l,k);
-            gsl_matrix_get(m_FitErrData_comb,l,k);
 
             relerror = gsl_matrix_get(m_FitErrData_comb,l,k)/gsl_matrix_get(m_FitData_comb,l,k);
             if (gsl_matrix_get(m_FitData_comb,l,k) ==0)
