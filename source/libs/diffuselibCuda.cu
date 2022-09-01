@@ -633,7 +633,7 @@ void DiffuseXRD::ReadDataFile(char* FileName){
   m_FitData_comb = gsl_matrix_alloc (m_NumFitDatSets, m_NumFitDatLines);
   m_FitData_qzVals = gsl_vector_alloc (m_NumFitDatSets);
 
-  for(k=6;k<=NumHeaderLines-1;k++){
+  for(int k=6;k<=NumHeaderLines-1;k++){
     in.getline(lineText, 99);
     sscanf(lineText, "QZSTART=%lf",&qzbtmp);
     gsl_vector_set(m_FitData_qzVals,k-6,qzbtmp);
