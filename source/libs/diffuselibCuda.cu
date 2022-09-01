@@ -659,11 +659,14 @@ void DiffuseXRD::ReadDataFile(char* FileName){
   std::cout<<m_NumFitDatLines<<std::endl;
   for(int k =0; k<m_NumFitDatLines; k++){
         in.getline(lineText, 99);
-        int tempval;
-        stringstream ss(lineText); // convert string into a stream
-        while (ss >> tempval)     // convert each word on the stream into an int
+
+        std::istringstream ss(lineText);
+        std::string token;
+        // int tempval;
+        // stringstream ss(lineText); // convert string into a stream
+        while (std::getline(ss, token, '\t'))     // convert each word on the stream into an int
         {
-            std::cout<<tempval<<",";
+            std::cout<<token<<",";
         }
         std::cout<<std::endl;
         // std::cout<<lineText<<std::endl;
