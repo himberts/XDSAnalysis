@@ -87,6 +87,7 @@ public:
   double *m_FitData2;
   double *m_FitQr2;
   gsl_matrix *m_FitData_comb;
+  gsl_matrix *m_FitErrData_comb;
   gsl_vector *m_FitData_qzVals;
   int m_NumFitDatSets;
   double *m_FitErrData2;

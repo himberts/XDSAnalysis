@@ -631,6 +631,7 @@ void DiffuseXRD::ReadDataFile(char* FileName){
   m_NumFitDatLines = NumDatPoints;
   m_NumFitDatSets = NumHeaderLines-6;
   m_FitData_comb = gsl_matrix_alloc (m_NumFitDatSets, m_NumFitDatLines);
+  m_FitErrData_comb = gsl_matrix_alloc (m_NumFitDatSets, m_NumFitDatLines);
   m_FitData_qzVals = gsl_vector_alloc (m_NumFitDatSets);
 
   for(int k=6;k<=NumHeaderLines-1;k++){
@@ -655,11 +656,15 @@ void DiffuseXRD::ReadDataFile(char* FileName){
   m_FitErrData2 = new double [m_NumFitDatLines];
 
   //Read Data
-  std::cout<<NumDatPoints<<std::endl;
-  for(int k =0;k<NumDatPoints;k++){
+  std::cout<<m_NumFitDatLines<<std::endl;
+  for(int k =0;k<m_NumFitDatLines;k++){
         in.getline(lineText, 99);
         // std::cout<<lineText<<std::endl;
         sscanf(lineText, "%f\t%f\t%f\t%f\t%f",&qrtmp,&datatmp,&errdatatmp,&datatmp2,&errdatatmp2);
+        gsl_matrix_set(m_FitData_comb,0,k,(double)datatmp)
+        gsl_matrix_set(m_FitData_comb,1,k,(double)errdatatmp)
+        gsl_matrix_set(m_FitErrData_comb,0,k,(double)datatmp)
+        gsl_matrix_set(m_FitErrData_comb,1,k,(double)errdatatmp2)
         m_FitQr[k] = (double)qrtmp;
         m_FitData[k] = (double)datatmp;
         m_FitErrData[k] = (double)errdatatmp;
@@ -668,6 +673,31 @@ void DiffuseXRD::ReadDataFile(char* FileName){
         // std::cout<<m_FitQr[k]<<"\t"<<m_FitData[k]<<m_FitQr[k]<<"\t"<<m_FitData2[k]<<std::endl;
     }
     in.close();
+
+    for( int l = 1;l<m_FitData_qzVals;l++){
+
+      NormFactor = gsl_matrix_get(m_FitData_comb,l,0);
+      for(int k =0;k<m_NumFitDatLines;k++){
+
+            gsl_matrix_get(m_FitData_comb,l,k)
+            gsl_matrix_get(m_FitErrData_comb,l,k)
+
+            relerror = gsl_matrix_get(m_FitErrData_comb,l,k)/gsl_matrix_get(m_FitData_comb,l,k);
+            if (gsl_matrix_get(m_FitData_comb,l,k) ==0)
+            {
+              relerror = 0.01;
+            }
+            gsl_matrix_set(m_FitData_comb,l,k,gsl_matrix_get(m_FitData_comb,l,k)/NormFactor);
+            gsl_matrix_set(m_FitErrData_comb,l,k,gsl_matrix_get(m_FitData_comb,l,k)*relerror);
+            if(gsl_matrix_get(m_FitErrData_comb,l,k)<0.002){
+              gsl_matrix_set(m_FitErrData_comb,l,k,0.01);
+              m_FitErrData[k] = 0.01;
+            }
+            std::cout<<gsl_matrix_get(m_FitData_comb,l,k)<<"\t"<<gsl_matrix_get(m_FitErrData_comb,l,k)<<std::endl;
+        }
+    }
+
+
     SubFactor = 0;//m_FitData[NumDatPoints-1];
     std::cout<<"SubFactor Data = "<<SubFactor<<std::endl;
     NormFactor = m_FitData[0]-SubFactor;
