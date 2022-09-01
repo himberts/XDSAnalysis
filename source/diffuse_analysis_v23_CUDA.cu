@@ -152,7 +152,7 @@ xi_f (const gsl_vector * x, void *params,
   for (i = 0; i < n; i++)
   {
       double Yi = (Simulation.InterpolateQrScan(qpardata[i])-SubFactor)/Normalisation;
-      gsl_vector_set (xiS2, i, (Yi - gsl_matrix_get(data,1,i))/gsl_matrix_get(sigma,0,i)); //!!!!
+      gsl_vector_set (xiS2, i, (Yi - gsl_matrix_get(data,1,i))/gsl_matrix_get(sigma,1,i)); //!!!!
   }
 
   for (i = 0; i < n; i++)
