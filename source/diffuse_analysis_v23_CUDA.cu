@@ -634,7 +634,7 @@ int main(int argc, char const *argv[]) {
     // gsl_multimin_fminimizer_free (s);
     // double qztemp = Simulation.GetQzStart();
     double qztemp;
-    for(int k =1; k<Simulation.m_FitData_comb->size1 ; k++){
+    for(int k =0; k<Simulation.m_FitData_comb->size1 ; k++){
       qztemp = gsl_vector_get (Simulation.m_FitData_qzVals, 0);
       std::cout<<qztemp<<endl;
       PrintLine();
