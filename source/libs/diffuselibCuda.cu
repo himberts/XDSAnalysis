@@ -412,7 +412,7 @@ void DiffuseXRD::WriteQrVector(char* FileName){
   OutputFile.close();
 }
 
-void DiffuseXRD::WriteFitData(char* FileName){
+void DiffuseXRD::WriteFitData(char* FileName, int DatIndex){
   WriteHeader(FileName,0,0);
   ofstream OutputFile;
   OutputFile.open(FileName,ios::app);
@@ -420,7 +420,7 @@ void DiffuseXRD::WriteFitData(char* FileName){
   double Yk;
   for(int k = 0; k<m_NumFitDatLines; k++){
     Yk = (InterpolateQrScan(m_FitQr[k]))/NormFactor;
-    OutputFile<<m_FitQr[k]<<"\t"<<gsl_matrix_get(m_FitData_comb,0,k)<<"\t"<<gsl_matrix_get(m_FitErrData_comb,0,k)<<"\t"<<Yk<<"\n";
+    OutputFile<<m_FitQr[k]<<"\t"<<gsl_matrix_get(m_FitData_comb,DatIndex,k)<<"\t"<<gsl_matrix_get(m_FitErrData_comb,DatIndex,k)<<"\t"<<Yk<<"\n";
     // OutputFile<<m_r[k]<<"\t"<<m_SummationTable[k]<<"\n";
   }
   OutputFile.close();
