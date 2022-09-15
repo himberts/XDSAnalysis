@@ -434,7 +434,7 @@ void DiffuseXRD::WriteFitData2(char* FileName){
   double Yk;
   for(int k = 0; k<m_NumFitDatLines; k++){
     Yk = (InterpolateQrScan(m_FitQr[k]))/NormFactor;
-    OutputFile<<m_FitQr[k]<<"\t"<<gsl_matrix_get(m_FitData_comb,0,k)<<"\t"<<gsl_matrix_get(m_FitErrData_comb,0,k)<<"\t"<<Yk<<"\n";
+    OutputFile<<m_FitQr[k]<<"\t"<<gsl_matrix_get(m_FitData_comb,1,k)<<"\t"<<gsl_matrix_get(m_FitErrData_comb,1,k)<<"\t"<<Yk<<"\n";
     // OutputFile<<m_r[k]<<"\t"<<m_SummationTable[k]<<"\n";
   }
   OutputFile.close();
