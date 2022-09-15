@@ -181,7 +181,7 @@ public:
   double GetXI2();
   double XiSquareCuda(const gsl_vector*, void*);
   void WriteQrVector(char*);
-  void WriteFitData(char*);
+  void WriteFitData(char*,int);
   void WriteFitData2(char*);
   void WriteHeader(char*,int,int);
   void QzScan();
