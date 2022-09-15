@@ -700,7 +700,7 @@ void DiffuseXRD::ReadDataFile(char* FileName){
     in.close();
     // std::cout<<std::endl;
     // std::cout<<std::endl;
-    for( int l = 0;l<2;l++){
+    for( int l = 0;l<m_NumFitDatSets;l++){
 
       NormFactor = gsl_matrix_get(m_FitData_comb,l,0);
       for(int k =0;k<m_NumFitDatLines;k++){
