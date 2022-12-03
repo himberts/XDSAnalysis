@@ -716,7 +716,7 @@ void DiffuseXRD::ReadDataFile(char* FileName){
               gsl_matrix_set(m_FitErrData_comb,l,k,0.01);
               m_FitErrData[k] = 0.01;
             }
-            std::cout<<gsl_matrix_get(m_FitData_comb,l,k)<<"\t"<<gsl_matrix_get(m_FitErrData_comb,l,k)<<std::endl;
+            // std::cout<<gsl_matrix_get(m_FitData_comb,l,k)<<"\t"<<gsl_matrix_get(m_FitErrData_comb,l,k)<<std::endl;
         }
     }
 
