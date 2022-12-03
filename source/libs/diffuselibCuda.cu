@@ -619,7 +619,7 @@ void DiffuseXRD::ReadDataFile(char* FileName){
   int NumDatPoints,NumHeaderLines;
   double q1tmp,qzbtmp,NormFactor,SubFactor;
   // double qzbtmp;
-  char lineText[100];
+  char lineText[1000];
   ifstream in(FileName);
   // double NormFactor;
   //Read Header
@@ -650,7 +650,7 @@ void DiffuseXRD::ReadDataFile(char* FileName){
   // in.getline(lineText, 99);
   // sscanf(lineText, "QZSTART=%lf",&qzbtmp);
   m_qzstart2 = gsl_vector_get(m_FitData_qzVals,1);
-  in.getline(lineText, 99);
+  in.getline(lineText, 1000);
 
 
   //Allocate Memory
