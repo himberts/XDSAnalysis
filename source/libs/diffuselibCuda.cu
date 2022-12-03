@@ -664,7 +664,7 @@ void DiffuseXRD::ReadDataFile(char* FileName){
   std::cout<<m_NumFitDatLines<<std::endl;
   std::cout<<m_NumFitDatSets<<std::endl;
   for(int k =0; k<m_NumFitDatLines; k++){
-        in.getline(lineText, 99);
+        in.getline(lineText, 1000);
         std::cout<<lineText<<std::endl;
         std::istringstream ss(lineText);
         std::string token;
