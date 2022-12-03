@@ -665,7 +665,7 @@ void DiffuseXRD::ReadDataFile(char* FileName){
   std::cout<<m_NumFitDatSets<<std::endl;
   for(int k =0; k<m_NumFitDatLines; k++){
         in.getline(lineText, 99);
-
+        std::cout<<lineText<<std::endl;
         std::istringstream ss(lineText);
         std::string token;
         // int tempval;
@@ -673,7 +673,7 @@ void DiffuseXRD::ReadDataFile(char* FileName){
         int ColumnCount = 0;
         while (std::getline(ss, token, ' '))     // convert each word on the stream into an int
         {
-            std::cout<<token.c_str()<<std::endl;
+            // std::cout<<token.c_str()<<std::endl;
             if(ColumnCount==0){
               m_FitQr[k] = (double)(atof(token.c_str()));
             }
