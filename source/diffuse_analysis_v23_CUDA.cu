@@ -598,7 +598,7 @@ int main(int argc, char const *argv[]) {
 
            Simulation.SetEta(gsl_vector_get(s->x, 0));
            Simulation.SetZeta(gsl_vector_get(s->x, 1));
-           Simulation.SetDEta(gsl_matrix_get(covar,0,0);
+           Simulation.SetDEta(gsl_matrix_get(covar,0,0));
            Simulation.SetDZeta(gsl_matrix_get(covar,1,1));
            Simulation.ConvertUnitsCale();
 
