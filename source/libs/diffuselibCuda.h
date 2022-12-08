@@ -179,6 +179,10 @@ public:
   double GetNumDataLines();
   double GetNumDataSets();
   double GetXI2();
+  double GetKc();
+  double GetB();
+  double GetDKc();
+  double GetDB();
   double XiSquareCuda(const gsl_vector*, void*);
   void WriteQrVector(char*);
   void WriteFitData(char*,int);

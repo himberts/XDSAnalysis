@@ -599,6 +599,22 @@ double DiffuseXRD::GetXI2(){
   return(m_xi2);
 }
 
+double DiffuseXRD::GetKc(){
+  return(m_Kc);
+}
+
+double DiffuseXRD::GetB(){
+  return(m_B);
+}
+
+double DiffuseXRD::GetDKc(){
+  return(m_dKc);
+}
+
+double DiffuseXRD::GetDB(){
+  return(m_dB);
+}
+
 void DiffuseXRD::ConvertUnitsCale(){
   m_B = 4*M_PI/8/m_eta/m_zeta/m_zeta/m_Dspacing/m_Dspacing; // in units of kBT: B=4pikBT/(8 eta zeta^2 D^2)
   m_Kc = m_zeta*m_zeta*4*M_PI/8/m_eta/m_Dspacing/m_Dspacing; // in units of kBT: Kc=4pi zeta^2 kBT/(8 eta D^2)

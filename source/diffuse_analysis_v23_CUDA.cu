@@ -560,12 +560,12 @@ int main(int argc, char const *argv[]) {
            // sigma2[i] = Simulation.m_FitErrData2[i];
          };
 
-       gsl_vector* StartVals;
-       StartVals = gsl_vector_alloc(2);
-       // Output = gsl_vector_alloc(n);
-
-       gsl_vector_set(StartVals,0,.1);
-       gsl_vector_set(StartVals,1,80);
+       // gsl_vector* StartVals;
+       // StartVals = gsl_vector_alloc(2);
+       // // Output = gsl_vector_alloc(n);
+       //
+       // gsl_vector_set(StartVals,0,.1);
+       // gsl_vector_set(StartVals,1,80);
 
        // std::cout<<"here"<<std::endl;
        // xi_f(StartVals,&d,Output);
@@ -591,7 +591,18 @@ int main(int argc, char const *argv[]) {
            // printf ("status = %s\n", gsl_strerror (status));
 
            // print_state (iter, s);
-           PrintFitTableData(iter,gsl_vector_get (s->x, 0),gsl_vector_get (s->x, 1),gsl_blas_dnrm2 (s->f),1);
+
+
+           gsl_multifit_fdfsolver_jac(s,J);
+           gsl_multifit_covar (J, 0.0, covar);
+
+           Simulation.SetEta(gsl_vector_get(s->x, 0))
+           Simulation.SetZeta(gsl_vector_get(s->x, 1))
+           Simulation.SetDEta(gsl_matrix_get(covar,0,0);
+           Simulation.SetDZeta(gsl_matrix_get(covar,1,1));
+           Simulation.ConvertUnitsCale();
+
+           PrintFitTableData(iter,gsl_vector_get (s->x, 0),gsl_vector_get (s->x, 1),Simulation.GetKc(),Simulation.GetDKc(),Simulation.GetB(),Simulation.GetDB(),gsl_blas_dnrm2 (s->f),1);
            Simulation.SetXI2(gsl_blas_dnrm2 (s->f));
            if (status)
              break;

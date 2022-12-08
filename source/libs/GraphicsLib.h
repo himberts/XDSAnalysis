@@ -10,7 +10,7 @@ void PrintSpaces(int);
 void PrintStarLine(int);
 void PrintProgress(double n);
 void PrintFitTableHeader();
-void PrintFitTableData(int, double, double, double, double);
+void PrintFitTableData(int, double, double, double, double, double, double);
 void PrintProcessInfoHeader();
 void PrintProcessInfo(std::string, std::string, int, int, int);
 #endif

@@ -65,8 +65,8 @@ void PrintFitTableHeader(){
   }
   std::cout<<std::endl;
 }
-void PrintFitTableData(int iteration, double eta, double zeta, double XiSquare, double size){
-  std::cout<<"|"<<std::setw(10)<<iteration<<"|"<<std::setw(10)<<eta<<"|"<<std::setw(10)<<zeta<<"|"<<std::setw(10)<<XiSquare<<"|"<<std::setw(10)<<size<<"|"<<std::endl;
+void PrintFitTableData(int iteration, double eta, double zeta, double kc, double dkc, double B, double dB, double XiSquare, double size){
+  std::cout<<"|"<<std::setw(10)<<iteration<<"|"<<std::setw(10)<<eta<<"|"<<std::setw(10)<<zeta<<"|"<<std::setw(10)<<kc<<"|"<<std::setw(10)<<dkc<<"|"<<std::setw(10)<<B<<"|"<<std::setw(10)<<dB<<"|"<<std::setw(10)<<XiSquare<<"|"<<std::setw(10)<<size<<"|"<<std::endl;
 }
 
 
