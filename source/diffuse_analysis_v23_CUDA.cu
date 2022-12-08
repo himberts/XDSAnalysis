@@ -596,8 +596,8 @@ int main(int argc, char const *argv[]) {
            gsl_multifit_fdfsolver_jac(s,J);
            gsl_multifit_covar (J, 0.0, covar);
 
-           Simulation.SetEta(gsl_vector_get(s->x, 0))
-           Simulation.SetZeta(gsl_vector_get(s->x, 1))
+           Simulation.SetEta(gsl_vector_get(s->x, 0));
+           Simulation.SetZeta(gsl_vector_get(s->x, 1));
            Simulation.SetDEta(gsl_matrix_get(covar,0,0);
            Simulation.SetDZeta(gsl_matrix_get(covar,1,1));
            Simulation.ConvertUnitsCale();
