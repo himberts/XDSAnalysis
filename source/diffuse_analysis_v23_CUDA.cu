@@ -497,7 +497,7 @@ int main(int argc, char const *argv[]) {
 
       PrintProcessInfoHeader();
        // Simulation.PreProcessCorrFunc(CNMAX);
-       const char *CorrFuncFilePath = "/opt/genapp/XDSAnalysis/bin/CorrelationFunctionTable_08112022.cf";
+       char *CorrFuncFilePath = "/opt/genapp/XDSAnalysis/bin/CorrelationFunctionTable_08112022.cf";
        Simulation.LoadCorrFunc(CorrFuncFilePath);
        PrintProcessInfoHeader();
        Simulation.PreProcessHr();
@@ -703,7 +703,7 @@ int main(int argc, char const *argv[]) {
         Simulation.InitiateQzScan();
         PrintProcessInfoHeader();
         // Simulation.PreProcessCorrFunc(CNMAX);
-        const char *CorrFuncFilePath = "/opt/genapp/XDSAnalysis/bin/CorrelationFunctionTable_08112022.cf";
+        char *CorrFuncFilePath = "/opt/genapp/XDSAnalysis/bin/CorrelationFunctionTable_08112022.cf";
         Simulation.LoadCorrFunc(CorrFuncFilePath);
         // Simulation.LoadCorrFunc("CorrelationFunctionTable_08112022.cf");
         PrintProcessInfoHeader();
