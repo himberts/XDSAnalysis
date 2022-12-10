@@ -497,7 +497,8 @@ int main(int argc, char const *argv[]) {
 
       PrintProcessInfoHeader();
        // Simulation.PreProcessCorrFunc(CNMAX);
-       Simulation.LoadCorrFunc("/opt/genapp/XDSAnalysis/bin/CorrelationFunctionTable_08112022.cf");
+       const char CorrFuncFilePath = "/opt/genapp/XDSAnalysis/bin/CorrelationFunctionTable_08112022.cf";
+       Simulation.LoadCorrFunc(CorrFuncFilePath);
        PrintProcessInfoHeader();
        Simulation.PreProcessHr();
        Simulation.PreProcessHz(CNMAX);
@@ -521,7 +522,8 @@ int main(int argc, char const *argv[]) {
        gsl_matrix *covar = gsl_matrix_alloc (p, p);
        gsl_matrix *J = gsl_matrix_alloc (n, p);
 
-       double y[n],y2[n], sigma[n],sigma2[n], qpardata[n];
+       // double y[n],y2[n], sigma[n],sigma2[n], qpardata[n];
+       double qpardata[n];
        gsl_matrix * FitData;
        gsl_matrix * ErrData;
 
@@ -701,7 +703,9 @@ int main(int argc, char const *argv[]) {
         Simulation.InitiateQzScan();
         PrintProcessInfoHeader();
         // Simulation.PreProcessCorrFunc(CNMAX);
-        Simulation.LoadCorrFunc("CorrelationFunctionTable_08112022.cf");
+        const char CorrFuncFilePath = "/opt/genapp/XDSAnalysis/bin/CorrelationFunctionTable_08112022.cf";
+        Simulation.LoadCorrFunc(CorrFuncFilePath);
+        // Simulation.LoadCorrFunc("CorrelationFunctionTable_08112022.cf");
         PrintProcessInfoHeader();
 
         Simulation.PreProcessHr();

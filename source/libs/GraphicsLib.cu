@@ -60,7 +60,7 @@ void PrintProgress(double Percentage){
 
 void PrintFitTableHeader(){
   std::cout<<"|"<<std::setw(10)<<"Iteration"<<"|"<<std::setw(10)<<"Eta"<<"|"<<std::setw(10)<<"Zeta"<<"|"<<std::setw(10)<<"Kc"<<"|"<<std::setw(10)<<"dKc"<<"|"<<std::setw(15)<<"B"<<"|"<<std::setw(15)<<"dB"<<"|"<<std::setw(10)<<"Xisquare"<<"|"<<std::setw(10)<<"Size"<<"|"<<std::endl;
-  for(int k=1; k<=120; k++){
+  for(int k=1; k<=110; k++){
     std::cout<<"_";
   }
   std::cout<<std::endl;

@@ -631,9 +631,11 @@ void DiffuseXRD::ConvertUnitsCale(){
 }
 
 void DiffuseXRD::ReadDataFile(char* FileName){
-  float datatmp, errdatatmp, datatmp2, errdatatmp2, qrtmp, relerror;
+  // float datatmp, errdatatmp, datatmp2, errdatatmp2, qrtmp, relerror;
+  float relerror;
   int NumDatPoints,NumHeaderLines;
-  double q1tmp,qzbtmp,NormFactor,SubFactor;
+  // double q1tmp,qzbtmp,NormFactor,SubFactor;
+  double q1tmp,qzbtmp,NormFactor;
   // double qzbtmp;
   char lineText[1000];
   ifstream in(FileName);
@@ -681,7 +683,7 @@ void DiffuseXRD::ReadDataFile(char* FileName){
   std::cout<<m_NumFitDatSets<<std::endl;
   for(int k =0; k<m_NumFitDatLines; k++){
         in.getline(lineText, 1000);
-        std::cout<<lineText<<std::endl;
+        // std::cout<<lineText<<std::endl;
         std::istringstream ss(lineText);
         std::string token;
         // int tempval;
@@ -705,8 +707,9 @@ void DiffuseXRD::ReadDataFile(char* FileName){
             }
             ColumnCount++;
         }
-        std::cout<<"  "<<std::endl;
-        std::cout<<"  "<<std::endl;
+        // std::cout<<"  "<<std::endl;
+        // std::cout<<"  "<<std::endl;
+
         // std::cout<<std::endl;
         // // std::cout<<lineText<<std::endl;
         // sscanf(lineText, "%f\t%f\t%f\t%f\t%f",&qrtmp,&datatmp,&errdatatmp,&datatmp2,&errdatatmp2);

@@ -1,7 +1,7 @@
 #ifndef __GRAPHICSLIB_INCL__
 #define __GRAPHICSLIB_INCL__
 
-#define DIFFVERSION 22
+#define DIFFVERSION 23
 #define GRAPHWIDTH 69
 
 void PrintLogo();
