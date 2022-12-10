@@ -57,6 +57,8 @@ void DiffuseXRD::ListSimParameters(){
   std::cout<<"|"<<std::setw(20)<<"Qr Intervals"<<"|"<<std::setw(15)<<m_QrIntervals<<"|"<<std::setw(10)<<"-"<<"|"<<std::endl;
   std::cout<<"|"<<std::setw(20)<<"IntIntervals"<<"|"<<std::setw(15)<<m_IntIntervals<<"|"<<std::setw(10)<<"-"<<"|"<<std::endl;
   std::cout<<"|"<<std::setw(20)<<"NHankelTransform"<<"|"<<std::setw(15)<<m_NHankelTransform<<"|"<<std::setw(10)<<"-"<<"|"<<std::endl;
+  std::cout<<"|"<<std::setw(20)<<"Fitdatasets"<<"|"<<std::setw(15)<<m_NumFitDatSets<<"|"<<std::setw(10)<<"-"<<"|"<<std::endl;
+  std::cout<<"|"<<std::setw(20)<<"Fitdatalines"<<"|"<<std::setw(15)<<m_NumFitDatLines<<"|"<<std::setw(10)<<"-"<<"|"<<std::endl;
   std::cout<<std::endl;
 }
 
@@ -679,8 +681,8 @@ void DiffuseXRD::ReadDataFile(char* FileName){
   m_FitErrData2 = new double [m_NumFitDatLines];
 
   //Read Data
-  std::cout<<m_NumFitDatLines<<std::endl;
-  std::cout<<m_NumFitDatSets<<std::endl;
+  // std::cout<<m_NumFitDatLines<<std::endl;
+  // std::cout<<m_NumFitDatSets<<std::endl;
   for(int k =0; k<m_NumFitDatLines; k++){
         in.getline(lineText, 1000);
         // std::cout<<lineText<<std::endl;
