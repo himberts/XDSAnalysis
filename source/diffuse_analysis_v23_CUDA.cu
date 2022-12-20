@@ -373,7 +373,7 @@ int main(int argc, char const *argv[]) {
       ("sz", po::value<double>()->default_value(3.3e3), "Average z domain size")
       ("Lr", po::value<double>()->default_value(1e4), "Average z domain size")
       ("sr", po::value<double>()->default_value(3.3e3), "Average z domain size")
-      ("w", po::value<double>()->default_value(0.004), "Gaussian Width of the Beam in inverse Angstrom")
+      ("w,w", po::value<double>()->default_value(0.004), "Gaussian Width of the Beam in inverse Angstrom")
       ("output,o", po::value<std::string>()->default_value("UNKNOWN"), "Provide Outputfilename without extension")
       ("file,f", po::value<std::string>(), "Provide InputFile without extension")
   ;

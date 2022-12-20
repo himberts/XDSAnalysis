@@ -44,6 +44,7 @@ void DiffuseXRD::ListSimParameters(){
   std::cout<<"|"<<std::setw(20)<<"Sigma R"<<"|"<<std::setw(15)<<m_SigmaR<<"|"<<std::setw(10)<<"Ang"<<"|"<<std::endl;
   std::cout<<"|"<<std::setw(20)<<"Avg Lz"<<"|"<<std::setw(15)<<m_AvgLz<<"|"<<std::setw(10)<<"Ang"<<"|"<<std::endl;
   std::cout<<"|"<<std::setw(20)<<"Sigma Z"<<"|"<<std::setw(15)<<m_SigmaZ<<"|"<<std::setw(10)<<"Ang"<<"|"<<std::endl;
+  std::cout<<"|"<<std::setw(20)<<"Beam Width"<<"|"<<std::setw(15)<<m_bwdt<<"|"<<std::setw(10)<<"Ang^-1"<<"|"<<std::endl;
   std::cout<<"|"<<std::setw(20)<<"initial Qz"<<"|"<<std::setw(15)<<m_qzstart<<"|"<<std::setw(10)<<"Ang^-1"<<"|"<<std::endl;
   std::cout<<"|"<<std::setw(20)<<"final Qz"<<"|"<<std::setw(15)<<m_qzstop<<"|"<<std::setw(10)<<"Ang^-1"<<"|"<<std::endl;
   std::cout<<"|"<<std::setw(20)<<"Qz stepwidth"<<"|"<<std::setw(15)<<m_qzstep<<"|"<<std::setw(10)<<"Ang^-1"<<"|"<<std::endl;
