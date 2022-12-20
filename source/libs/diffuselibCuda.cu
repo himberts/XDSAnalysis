@@ -82,7 +82,7 @@ void DiffuseXRD::PreProcessCorrFunc(int nmax){
   std::cout<<std::endl;
   for(int n = 0; n<=nmax; n++){
     PrintProgress( ((double)n) / ((double)nmax) * 100 );
-    double q1 = m_q1; //!!!! Fixed Value
+    double q1 = m_q1;
     for(int k=0; k<=m_Rlength; k++){
       if((n<=30)&&(m_r[k]<=1000))
       {
@@ -172,7 +172,7 @@ void DiffuseXRD::PostProcessHankel(){
   double* Kernel;
   double* BlurringData;
   double qrKernel = 0;
-  double sigma = 0.004; //!!!
+  double sigma = m_bwdt; //!!!
   Kernel = new double [2*NumBlurPoints+1];
   BlurringData = new double [m_QrIntervals+2*NumBlurPoints];
 
@@ -492,6 +492,10 @@ void DiffuseXRD::Save2DScan(char* FileName){
     }
   }
   OutputFile.close();
+}
+
+void DiffuseXRD::SetBeamWidth(double bwdt){
+    m_bwdt = bwdt;
 }
 
 void DiffuseXRD::SetZeta(double zeta){
@@ -890,9 +894,9 @@ double Hz(double z, double AvgLz, double sigma, double D){
 }
 
 
-double Gauss(double qr){
-  double sigmas = pow(0.004,2);
-  double output;
-  output = 1/sqrt(2*M_PI*sigmas) * exp(- 1.0/2.0*pow(qr,2)/sigmas ) ;
-  return( output);
-}
+// double Gauss(double qr){
+//   double sigmas = pow(0.004,2);
+//   double output;
+//   output = 1/sqrt(2*M_PI*sigmas) * exp(- 1.0/2.0*pow(qr,2)/sigmas ) ;
+//   return( output);
+// }

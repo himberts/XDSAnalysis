@@ -78,6 +78,7 @@ private:
   int m_NumFitDatLines;
   int m_NumFitDatSets;
   double m_xi2;
+  double m_bwdt;
 
 public:
   int    m_Rlength;
@@ -152,6 +153,7 @@ public:
   void LoadCorrFunc(char*);
   void PreProcessHz(int);
   void PreProcessHr();
+  void SetBeamWidth(double);
   void SetZeta(double);
   void SetEta(double);
   void SetDZeta(double);
